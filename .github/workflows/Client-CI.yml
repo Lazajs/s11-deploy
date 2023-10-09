@@ -1,0 +1,56 @@
+name: Client CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      working-directory: client
+      run: npm install
+
+    - name: Run linting
+      working-directory: client
+      run: npm run lint
+
+  lint-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      working-directory: client
+      run: npm install
+
+    - name: Run ESLint with autofix
+      working-directory: client
+      run: npm run lint:fix
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      working-directory: client
+      run: npm install
+
+    - name: Run linting
+      working-directory: client
+      run: npm run lint
+
+    - name: Build for production
+      working-directory: client
+      run: npm run build
