@@ -26,6 +26,7 @@ function LoginPage() {
       <div className="flex flex-col items-center w-[300px] xl:w-[800px] xl:h-[594px] xl:border-[6px] border-fifth rounded-[20px]">
         {/* Form */}
         <form onSubmit={handleSubmit} className="w-[330px]">
+          {/* Logo */}
           <h1 className="border border-2 rounded-2xl outline-none px-4 py-2 mb-16 mx-auto w-[90%] xl:w-[100%] xl:text-[20px] xl:mt-12">
             Logo
           </h1>
