@@ -41,13 +41,13 @@ function LoginPage() {
                 onChange={handleChange}
                 required
                 placeholder="Email"
-                className="border border-2 rounded-2xl outline-none px-4 py-2 mb-16 mx-auto w-[100%] xl:text-[20px] xl:mb-4"
+                className="border border-2 rounded-2xl outline-none px-4 py-2 mx-auto w-[100%] xl:text-[20px] xl:mb-4"
               />
             </div>
           </div>
 
           {/* Password */}
-          <div className="mb-4 xl:mb-8">
+          <div className="mb-16 xl:mb-8">
             <div className="flex items-center">
               <div className="border border-2 rounded-2xl outline-none px-4 py-2 mx-auto w-[100%] xl:text-[20px]">
                 <input
@@ -68,7 +68,7 @@ function LoginPage() {
           <div className="xl:w-[477px]">
             <button
               type="submit"
-              className="border border-2 rounded-2xl outline-none px-4 py-2 mb-16 mx-auto w-[100%] xl:text-[20px] xl:w-[330px]"
+              className="border border-2 rounded-2xl outline-none px-4 py-2 mb-8 mx-auto w-[100%] xl:text-[20px] xl:w-[330px]"
             >
               Continue
             </button>
