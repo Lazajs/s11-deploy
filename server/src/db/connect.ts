@@ -1,5 +1,12 @@
 import mongoose from 'mongoose'
 
-export default async function () {
-  await mongoose.connect('mongodb://localhost:27017/express-mongo')
+const connect = async (url: string) => {
+  try {
+    await mongoose.connect(url)
+    console.log('Connected to the database')
+  } catch (error) {
+    console.error('Database connection error:', error)
+  }
 }
+
+export default connect
