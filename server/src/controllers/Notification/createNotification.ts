@@ -13,8 +13,7 @@ const createNotification = async (data: {
     if (!message || !receiver || !sender) {
       throw new Error('All fields are required (sender, receiver, message).')
     }
-
-    // Assuming you have a Message model
+    
     const newNotification = new Message({
       sender,
       receiver,
