@@ -1,7 +1,7 @@
 name: Server CI
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - develop
@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout 
       uses: actions/checkout@v2
 
     - name: Install dependencies
       working-directory: server
       run: npm install
 
-    - name: Run ESLint with autofix
+    - name: Lint code
       working-directory: server
       run: npm run lint
 
@@ -26,17 +26,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v2
 
     - name: Install dependencies
       working-directory: server
       run: npm install
 
-    - name: Run linting
+    - name: Lint code
       working-directory: server
       run: npm run lint
 
-    - name: Build for production
+    - name: Build bundle
       working-directory: server
       run: npm run build
