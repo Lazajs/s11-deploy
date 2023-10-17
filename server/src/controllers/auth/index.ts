@@ -4,7 +4,7 @@ import { validateUser } from './validateUser'
 
 interface AuthenticatedRequest extends Request {
   user?: {
-    passwordHash: string
+    passwordHash?: string
     // other user properties
   }
 }

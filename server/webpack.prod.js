@@ -1,5 +1,7 @@
 const path = require('node:path')
 
+const tsConfigFile = path.join(__dirname, './tsconfig.json')
+
 module.exports = {
   target: 'node',
   entry: './src/index.ts',
@@ -11,8 +13,13 @@ module.exports = {
   module: {
     rules: [{
       test: /\.ts$/,
-      use: 'ts-loader',
-      exclude: /node_modules/
+      exclude: /node_modules/,
+      use: {
+        loader: 'ts-loader',
+        options: {
+          configFile: tsConfigFile
+        }
+      }
     },
     {
       test: /\.js?$/,
@@ -21,12 +28,7 @@ module.exports = {
       options: {
         presets: [
           [
-            '@babel/preset-env',
-            {
-              targets: {
-                node: '8.10'
-              }
-            }
+            '@babel/preset-env'
           ]
         ]
       }
@@ -36,5 +38,8 @@ module.exports = {
     modules: [
       path.join(__dirname, 'node_modules')
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.png', '.jpg', '.ts', '.tsx', '.json', '.cjs', '.mjs']
   }
 }
