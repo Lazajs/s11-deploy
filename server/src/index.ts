@@ -6,11 +6,9 @@ import connect from './db/connect'
 import auth from './routes/auth'
 import notification from './routes/notification'
 
-import {createNotification} from './controllers/Notification/createNotification'
+import { configureSocketIO } from './sockets/socket'
 
 config()
-
-import { configureSocketIO } from './sockets/socket'
 
 const app = express()
 app.disable('x-powered-by')
@@ -29,7 +27,7 @@ if (!databaseURI || !frontEndURL) {
 const corsOptions: cors.CorsOptions = {
   origin: [frontEndURL],
   methods: 'GET,POST',
-  credentials: true,
+  credentials: true
 }
 
 app.use(cors(corsOptions))
@@ -48,10 +46,10 @@ const start = async () => {
     httpServer.listen(port, () => {
       console.log(`Server is running on port ${port}`)
     })
-
   } catch (error) {
     console.log(error)
   }
 }
 
 start()
+  .catch(console.error)

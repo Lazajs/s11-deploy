@@ -1,6 +1,5 @@
-import { Request, Response } from 'express'
-import mongoose, { Document } from 'mongoose'
-import Message, { IMessage } from '../../db/models/Notification'
+import { type Request, type Response } from 'express'
+import Message from '../../db/models/Notification'
 import { loadNotifications } from '../../sockets/socket'
 
 const deleteNotification = async (req: Request, res: Response) => {
@@ -13,12 +12,11 @@ const deleteNotification = async (req: Request, res: Response) => {
 
     const deletedNotification = await Message.findByIdAndDelete(messageId)
 
-    if(deletedNotification)
-    {
-      loadNotifications(userId)
+    if (deletedNotification) {
+      await loadNotifications(userId)
     }
 
-    return res.status(201).json({ data: { notification: deletedNotification }, message: "Notification deleted" })
+    return res.status(201).json({ data: { notification: deletedNotification }, message: 'Notification deleted' })
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json({ message: error.message, error: 'Delete Notification' })
