@@ -1,4 +1,4 @@
-import { deleteNotification } from "./deleteNotification"
+import { deleteNotification } from './deleteNotification'
 
 export {
   deleteNotification

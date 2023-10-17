@@ -1,5 +1,4 @@
-import mongoose, { Document } from 'mongoose'
-import Message, { IMessage } from '../../db/models/Notification'
+import Message from '../../db/models/Notification'
 import { loadNotifications } from '../../sockets/socket'
 
 const createNotification = async (data: {
@@ -13,16 +12,16 @@ const createNotification = async (data: {
     if (!message || !receiver || !sender) {
       throw new Error('All fields are required (sender, receiver, message).')
     }
-    
+
     const newNotification = new Message({
       sender,
       receiver,
-      message,
+      message
     })
 
     await newNotification.save()
 
-    loadNotifications(receiver)
+    await loadNotifications(receiver)
 
     return { data: newNotification, message: 'Notification Created' }
   } catch (error) {
@@ -36,6 +35,6 @@ const createNotification = async (data: {
 
 export { createNotification }
 
-//Sender ID (userId) - Receiver ID (userId) - Message for notification
+// Sender ID (userId) - Receiver ID (userId) - Message for notification
 
-//createNotification({sender: "124141", receiver: "15828", message: "There is an event near you!"})
+// createNotification({sender: "124141", receiver: "15828", message: "There is an event near you!"})

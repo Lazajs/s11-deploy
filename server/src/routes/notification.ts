@@ -1,6 +1,6 @@
-import express, { Request, Response, Router } from 'express'
+import express, { type Router } from 'express'
 import {
-  deleteNotification,
+  deleteNotification
 } from '../controllers/Notification/deleteNotification'
 
 const router: Router = express.Router()
