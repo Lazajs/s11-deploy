@@ -18,7 +18,7 @@ const options: swaggerJsdoc.Options = {
 
 const swaggerSpec = swaggerJsdoc(options)
 
-const router: Router = express.Router()
+const router = express.Router()
 
 router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
