@@ -1,0 +1,42 @@
+name: Server CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      working-directory: server
+      run: npm install
+
+    - name: Lint code
+      working-directory: server
+      run: npm run lint
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      working-directory: server
+      run: npm install
+
+    - name: Lint code
+      working-directory: server
+      run: npm run lint
+
+    - name: Build bundle
+      working-directory: server
+      run: npm run build
