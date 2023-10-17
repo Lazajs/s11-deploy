@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from 'express'
+import express from 'express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import path from 'path'
