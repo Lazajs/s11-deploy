@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: Express API
+  version: 1.0.0
+
+tags:
+  - name: Auth
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      in: header
+      name: session
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: 'user@example.com'
+        name:
+          type: string
+          minLength: 4
+          example: 'JohnDoe'
+        nextEvents:
+          type: array
+          items:
+            type: string
+        reviews:
+          type: array
+          items:
+            type: string 
+        ownEvents:
+          type: array
+          items:
+            type: string
+        password:
+          type: string
+          pattern: '^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,32}$'
+          example: 'Password1'
+        rating:
+          type: number
+        image:
+          type: string
+        birthdate:
+          type: string
+          format: date
+          example: '1990-01-15'
+    Notification:
+      type: object
+      properties:
+        sender:
+          type: string
+          required: true
+        receiver:
+          type: string
+          required: true
+        message:
+          type: string
+          required: true
+        timestamp:
+          type: string
+          format: date-time
+      example:
+        sender: 'senderUserId'
+        receiver: 'receiverUserId'
+        message: 'Hello, this is a message.'
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/auth/signup:
+    post:
+      summary: Sign up a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User signed up successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+
+  /api/auth/signin:
+    post:
+      summary: Sign in an existing user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              email: 'user@example.com'
+              password: 'Password1'
+      responses:
+        '200':
+          description: User signed in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+
+  /api/auth/logout:
+    get:
+      summary: Log out the current user
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: User logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+
+  /api/auth/me:
+    get:
+      summary: Get user information
+      tags:
+        - Auth
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+
+  /api/auth/google:
+    get:
+      summary: Initiate Google OAuth2 authentication
+      tags:
+        - Auth
+      responses:
+        '302':
+          description: Redirect to Google for authentication
+
+  /api/auth/google/callback:
+    get:
+      summary: Handle Google OAuth2 callback
+      tags:
+        - Auth
+      responses:
+        '302':
+          description: Redirect to the home page if successful, or to /auth/failure in case of failure
+  /api/notification/{userId}/{messageId}:
+    delete:
+      summary: Delete a specific notification
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to whom the notification belongs
+          required: true
+          schema:
+            type: string
+        - name: messageId
+          in: path
+          description: ID of the notification to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Notification deleted successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+      tags:
+        - Notifications

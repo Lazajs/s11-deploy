@@ -5,8 +5,8 @@ import { PORT } from './utils/config'
 import connect from './db/connect'
 import auth from './routes/auth'
 import notification from './routes/notification'
+import swagger from './routes/swagger'
 import { configureSocketIO } from './sockets/socket'
-// import { createNotification } from './controllers/Notification/createNotification'
 
 const app = express()
 app.disable('x-powered-by')
@@ -20,7 +20,7 @@ const frontEndURL = process.env.FRONT_END_URL
 
 if (!databaseURI || !frontEndURL) {
   throw new Error(
-    'DATABASE_URI/FRONT_END_URL environment variable are not set.'
+    'MONGOOSE_URI/FRONT_END_URL environment variable are not set.'
   )
 }
 
@@ -35,6 +35,7 @@ app.use(express.json())
 
 app.use('/api/auth', auth)
 app.use('/api/notification', notification)
+app.use('/api/api-docs', swagger)
 
 const start = async () => {
   try {

@@ -14,9 +14,10 @@ const deleteNotification = async (req: Request, res: Response) => {
 
     if (deletedNotification) {
       await loadNotifications(userId)
+      return res.status(204).end()
+    } else {
+      return res.status(404).end()
     }
-
-    return res.status(201).json({ data: { notification: deletedNotification }, message: 'Notification deleted' })
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json({ message: error.message, error: 'Delete Notification' })
