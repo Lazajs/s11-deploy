@@ -12,9 +12,13 @@ const cleanFileName = (fileName: string) => {
 readdirSync(PATH_ROUTER).filter((fileName) => {
   const cleanName = cleanFileName(fileName);
   if (cleanName !== "index") {
-    import(`./${cleanName}.ts`).then((moduleRouter) => {
-      router.use(`/api/v1/${cleanName}`, moduleRouter.router);
-    });
+    import(`./${cleanName}.ts`)
+      .then((moduleRouter) => {
+        router.use(`/api/v1/${cleanName}`, moduleRouter.router);
+      })
+      .catch((error) => {
+        console.error(`Error importing module ${cleanName}: ${error}`);
+      });
   }
 });
 
