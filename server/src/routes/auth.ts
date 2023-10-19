@@ -22,4 +22,4 @@ router.get(
   })
 )
 
-export default router
+export { router }

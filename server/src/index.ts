@@ -3,9 +3,7 @@ import http from 'http'
 import cors from 'cors'
 import { PORT } from './utils/config'
 import connect from './db/connect'
-import auth from './routes/auth'
-import notification from './routes/notification'
-import swagger from './routes/swagger'
+import { router } from './routes'
 import { configureSocketIO } from './sockets/socket'
 
 const app = express()
@@ -33,9 +31,7 @@ const corsOptions: cors.CorsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-app.use('/api/auth', auth)
-app.use('/api/notification', notification)
-app.use('/api/api-docs', swagger)
+app.use(router)
 
 const start = async () => {
   try {
@@ -43,11 +39,11 @@ const start = async () => {
 
     httpServer.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`)
+      console.log('Docs available at http://localhost:5000/api/v1/docs')
     })
   } catch (error) {
     console.log(error)
   }
 }
 
-start()
-  .catch(console.error)
+start().catch(console.error)

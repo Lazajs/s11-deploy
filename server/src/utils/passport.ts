@@ -5,7 +5,9 @@ import User from '../db/models/User'
 
 const GoogleStrategy = passportGoogle.Strategy
 
-passport.serializeUser(async (user: any, done) => { done(null, user._id) })
+passport.serializeUser(async (user: any, done) => {
+  done(null, user._id)
+})
 
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id)
@@ -27,7 +29,7 @@ passport.use(
       if (!user) {
         const newUser = await User.create({
           googleId: profile.id,
-          user: profile.displayName,
+          name: profile.displayName,
           email: profile.emails?.[0].value
         })
         if (newUser) {

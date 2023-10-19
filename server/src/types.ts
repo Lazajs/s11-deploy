@@ -10,6 +10,7 @@ export interface DatabaseUser extends Document {
   rating: number
   image: string
   birthdate: string
+  googleId: string
 }
 
 export interface IUser {
@@ -22,4 +23,5 @@ export interface IUser {
   reviews?: unknown[] // TODO
   ownEvents?: unknown[] // TODO
   rating?: number
+  googleId?: string
 }
