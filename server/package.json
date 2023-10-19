@@ -7,7 +7,7 @@
     "start": "node ./dist/app.bundle.js",
     "dev": "nodemon -c nodemon.json",
     "build": "webpack --config webpack.prod.js",
-    "docs": "npx swagger-jsdoc -d ./src/utils/swagger.js -o swagger.json 'src/routs/*.ts'",
+    "docs": "npx swagger-jsdoc -d ./src/utils/swagger.js -o swagger.json 'src/routes/*.ts'",
     "lint": "eslint . --ext .ts --fix"
   },
   "author": "",
