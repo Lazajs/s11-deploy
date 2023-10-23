@@ -8,7 +8,7 @@ const setViewedState = async (req: Request, res: Response) => {
       throw new Error('All fields are required (userId, senderId).')
     }
 
-    const result = await Chat.updateMany(
+    await Chat.updateMany(
       { sender: senderId, receiver: userId, viewed: false },
       { $set: { viewed: true } }
     )
