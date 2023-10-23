@@ -3,7 +3,6 @@ import { config } from 'dotenv'
 import type http from 'http'
 import mongoose from 'mongoose'
 import Message from '../db/models/Notification'
-import User from '../db/models/User'
 
 config()
 let io: Server
@@ -80,7 +79,6 @@ const loadNotifications = async (userId: string) => {
     },
   ])
 
-  console.log(getNotifications)
   // Emit the new notification to the specific client
   io.to(userId).emit('notifications', getNotifications)
 }
