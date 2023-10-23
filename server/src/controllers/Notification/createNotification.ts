@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Message from '../../db/models/Notification'
 import { loadNotifications } from '../../sockets/socket'
 
@@ -13,9 +14,12 @@ const createNotification = async (data: {
       throw new Error('All fields are required (sender, receiver, message).')
     }
 
+    const senderIdObject = new mongoose.Types.ObjectId(sender)
+    const receiverIdObject = new mongoose.Types.ObjectId(receiver)
+
     const newNotification = new Message({
-      sender,
-      receiver,
+      sender: senderIdObject,
+      receiver: receiverIdObject,
       message
     })
 

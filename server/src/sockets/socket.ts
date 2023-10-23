@@ -1,7 +1,10 @@
 import { Server, type Socket } from 'socket.io'
 import { config } from 'dotenv'
 import type http from 'http'
+import mongoose from 'mongoose'
 import Message from '../db/models/Notification'
+import User from '../db/models/User'
+
 config()
 let io: Server
 
@@ -41,9 +44,60 @@ const loadNotifications = async (userId: string) => {
     throw new Error('Socket.io has not been configured yet.')
   }
 
-  const getNotifications = await Message.find({ receiver: userId })
+  const userIdObject = new mongoose.Types.ObjectId(userId);
+
+  const getNotifications = await Message.aggregate([
+    {
+      $match: {
+        receiver: userIdObject,
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'receiver',
+        foreignField: '_id',
+        as: 'userData'
+      },
+    },
+    {
+      $unwind: '$userData',
+    },
+    {
+      $project: {
+        _id: 0,
+        'userData.name': 1,
+        'userData.image': {
+          $ifNull: 
+          [
+            '$userData.image', 
+            'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+          ],
+        },
+        message: 1,
+        timestamp: 1
+      },
+    },
+  ])
+
+  console.log(getNotifications)
   // Emit the new notification to the specific client
   io.to(userId).emit('notifications', getNotifications)
 }
 
-export { configureSocketIO, loadNotifications }
+const notifyChatMessage = async (sender: string, receiver: string, message: string, timestamp: string) => {
+  if (!io) {
+    throw new Error('Socket.io has not been configured yet.')
+  }
+
+  const data = {
+    sender,
+    receiver,
+    message,
+    timestamp
+  }
+  
+  io.to(receiver).emit('chatNotifications', data)
+}
+
+export { configureSocketIO, loadNotifications, notifyChatMessage }

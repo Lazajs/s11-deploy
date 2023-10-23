@@ -1,29 +1,31 @@
-import { type Document, model, Schema } from 'mongoose'
+import { Document, model, Schema, Types } from 'mongoose'
 
 export interface IMessage extends Document {
-  sender: string
-  receiver: string
+  sender: Types.ObjectId 
+  receiver: Types.ObjectId
   message: string
   timestamp: Date
 }
 
 const messageSchema = new Schema<IMessage>({
   sender: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   receiver: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   message: {
     type: String,
-    required: true
+    required: true,
   },
   timestamp: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 })
 
 export default model<IMessage>('Message', messageSchema)
