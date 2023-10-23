@@ -1,8 +1,9 @@
 import Chat from '../../db/models/Chat'
+import { Request, Response } from 'express'
 
 const setViewedState = async (req: Request, res: Response) => {
   try {
-    const { userId, senderId } = req.params
+    const { userId, senderId } = req.params || {}
 
     if (!userId || !senderId) {
       throw new Error('All fields are required (userId, senderId).')

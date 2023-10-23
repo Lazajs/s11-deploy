@@ -1,22 +1,23 @@
-import mongoose from 'mongoose'
+import { Request, Response } from 'express'
+import mongoose, { ObjectId } from 'mongoose'
 import Chat from '../../db/models/Chat'
 import { notifyChatMessage } from '../../sockets/socket'
 
 const sendChatMessage = async (req: Request, res: Response) => {
   try {
-    const { senderId, receiverId, message } = req.body
+    const { senderId, receiverId, message } = req.body || {}
 
     if (!senderId || !receiverId || !message) {
-      throw new Error('All fields are required (senderId, receiverId and message).')
+      throw new Error('All fields are required (senderId, receiverId, and message).')
     }
 
-    const senderIdObject = new mongoose.Types.ObjectId(senderId)
-    const receiverIdObject = new mongoose.Types.ObjectId(receiverId)
+    const senderIdObject = new ObjectId(senderId)
+    const receiverIdObject = new ObjectId(receiverId)
 
     const newChatMessage = new Chat({
-      sender: senderIdObject, 
+      sender: senderIdObject,
       receiver: receiverIdObject,
-      message
+      message,
     })
 
     await newChatMessage.save()

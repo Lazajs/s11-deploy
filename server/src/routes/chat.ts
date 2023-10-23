@@ -1,12 +1,11 @@
-import express, { type Router } from 'express'
+import express from 'express'
+const router = express.Router()
 
 import {
   sendChatMessage,
   getAllChatMessages,
   setViewedState
 } from '../controllers/Chat'
-
-const router: Router = express.Router()
 
 router.post('/', sendChatMessage)
 router.get('/:receiverId', getAllChatMessages)
