@@ -1,21 +1,21 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose'
 
 export interface IChat extends Document {
-  sender: string;
-  receiver: string;
-  message: string;
-  viewed: boolean;
-  timestamp: Date;
+  sender: string
+  receiver: string
+  message: string
+  viewed: boolean
+  timestamp: Date
 }
 
 const chatSchema = new Schema<IChat>({
   sender: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId as any,
     ref: 'User',
     required: true
   },
   receiver: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId as any,
     ref: 'User',
     required: true
   },
@@ -31,6 +31,6 @@ const chatSchema = new Schema<IChat>({
     type: Date,
     default: Date.now
   }
-});
+})
 
-export default model<IChat>('Chat', chatSchema);
+export default model<IChat>('Chat', chatSchema)
