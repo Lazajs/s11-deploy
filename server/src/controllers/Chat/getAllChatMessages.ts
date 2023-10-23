@@ -1,18 +1,22 @@
+import { type Request, type Response } from 'express'
+import mongoose from 'mongoose'
+
 import Chat from '../../db/models/Chat'
 import User from '../../db/models/User'
 
 const getAllChatMessages = async (req: Request, res: Response) => {
   try {
-    const myUserId = req.params.receiverId
+    const myUserId = req.params.receiverId as string
 
     if (!myUserId) {
       throw new Error('Field receiverId is required.')
     }
 
+    const receiverIdObject = new mongoose.Types.ObjectId(myUserId)
+
     const messages = await Chat.find({
       $or: [
-        { sender: myUserId },
-        { receiver: myUserId },
+        { receiver: receiverIdObject }
       ],
     }).sort({ timestamp: 1 })
 
