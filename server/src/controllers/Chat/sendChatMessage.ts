@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose'
 import Chat from '../../db/models/Chat';
 import { notifyChatMessage } from '../../sockets/socket';
 
@@ -11,8 +11,8 @@ const sendChatMessage = async (req: Request, res: Response) => {
       throw new Error('All fields are required (senderId, receiverId, and message).');
     }
 
-    const senderIdObject = new ObjectId(senderId);
-    const receiverIdObject = new ObjectId(receiverId);
+    const senderIdObject = new mongoose.Types.ObjectId(senderId)
+    const receiverIdObject = new mongoose.Types.ObjectId(receiverId)
 
     const newChatMessage = new Chat({
       sender: senderIdObject,
