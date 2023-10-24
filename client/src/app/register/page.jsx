@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    age: '',
+    birthDate: '',
     password: '',
     confirmPassword: '',
   });
@@ -20,36 +21,30 @@ function RegisterPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Perform login logic here
+    // Perform register logic here
     console.log('Submitted:', formData);
   }
 
   return (
-    <main className="flex flex-col items-center mt-10">
-      <div className="flex flex-col items-center w-[300px] xl:w-[800px] xl:h-[594px] xl:border-[6px] border-fifth rounded-[20px]">
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="w-[330px] xl:w-[605px]">
-          {/* Logo */}
-          <h1 className="border border-2 rounded-2xl outline-none px-4 py-2 mb-16 mx-auto w-[90%] xl:w-[330px] xl:text-[20px] xl:mt-12 xl:text-center">
-            Logo
-          </h1>
-          <div className="xl:flex xl:items-center">
-            {/* Name */}
-            <div className="xl:mr-4">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name || ''}
-                onChange={handleChange}
-                required
-                placeholder="Name"
-                className="border border-2 rounded-2xl outline-none px-4 py-2 mb-6 mx-auto w-[100%] xl:text-[20px] xl:mb-4"
-              />
-            </div>
+    <main className="flex justify-center">
+      <div className="w-[304px] flex flex-col items-center justify-center py-8">
+        <div className="flex flex-row-reverse w-full">
+          <Icon icon="ph:x" className="text-[#54595F] w-[26px] h-[26px]" />
+        </div>
+        {/* Title */}
+        <div className="mt-10 mb-6 w-full">
+          <h1 className="font-semibold text-[32px] text-left">Registrate</h1>
+        </div>
+
+        <div>
+          {/* Form */}
+          <form onSubmit={handleSubmit}>
             {/* Email */}
-            <div className="xl:ml-4">
-              <div className="">
+            <div className="mb-6">
+              <div className="flex flex-col font-medium">
+                <label htmlFor="email" className="text-[11px] mb-2.5">
+                  Correo electronico
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -57,88 +52,80 @@ function RegisterPage() {
                   value={formData.email || ''}
                   onChange={handleChange}
                   required
-                  placeholder="Email"
-                  className="border border-2 rounded-2xl outline-none px-4 py-2 mb-6 mx-auto w-[100%] xl:text-[20px] xl:mb-4"
+                  placeholder="juan@mail.com"
+                  className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
                 />
               </div>
             </div>
-          </div>
-          {/* Age */}
-          <div className="relative">
-            <input
-              type="text"
-              id="age"
-              name="age"
-              value={formData.age || ''}
-              onChange={handleChange}
-              required
-              placeholder="Age"
-              className="border border-2 rounded-2xl outline-none px-4 py-2 mb-6 mx-auto w-[100%] xl:text-[20px] xl:mb-4"
-            />
-          </div>
-          <div className="xl:flex xl:items-center">
             {/* Password */}
-            <div className="mb-4 xl:mb-8 xl:mr-4">
-              <div className="flex items-center">
-                <div className="border border-2 rounded-2xl outline-none px-4 py-2 mx-auto w-[100%] xl:text-[20px]">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password || ''}
-                    onChange={handleChange}
-                    required
-                    placeholder="Password"
-                    className="w-full mr-2 outline-none"
-                  />
-                </div>
+            <div className="mb-6">
+              <div className="flex flex-col font-medium">
+                <label htmlFor="password" className="text-[11px] mb-2.5">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password || ''}
+                  onChange={handleChange}
+                  required
+                  placeholder="Contraseña"
+                  className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
+                />
               </div>
             </div>
             {/* Confirm Password */}
-            <div className="mb-4 xl:mb-8 xl:ml-4">
-              <div className="flex items-center">
-                <div className="border border-2 rounded-2xl outline-none px-4 py-2 mx-auto w-[100%] xl:text-[20px]">
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword || ''}
-                    onChange={handleChange}
-                    required
-                    placeholder="Confirm Password"
-                    className="w-full mr-2 outline-none"
-                  />
-                </div>
+            <div>
+              <div className="flex flex-col font-medium">
+                <label htmlFor="confirmPassword" className="text-[11px] mb-2.5">
+                  Repetir contraseña
+                </label>
+                <input
+                  type="confirmPassword"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword || ''}
+                  onChange={handleChange}
+                  required
+                  placeholder="Contraseña"
+                  className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
+                />
               </div>
             </div>
-          </div>
-          {/* Submit */}
-          <div className="xl:mt-4 xl:flex">
-            <button
-              type="submit"
-              className="border border-2 rounded-2xl outline-none px-4 py-2 mb-16 mx-auto w-[100%] xl:text-[20px] xl:w-[330px]"
-            >
-              Continue
-            </button>
-          </div>
-        </form>
-
-        {/* Google */}
-        <div className="mt-12">
-          <Link
-            href="/"
-            className="flex items-center justify-start button border border-sixth border-2 rounded-2xl px-4 space-x-6 w-[330px] h-[41px] xl:hidden"
-          >
-            <p>Continuar con Google</p>
-          </Link>
+            {/* Submit */}
+            <div className="mt-10 w-[303px] h-[36px]">
+              <button
+                type="submit"
+                className="border rounded-md bg-[#659DCB] outline-none w-full h-full text-white text-[11px]"
+              >
+                Continuar
+              </button>
+            </div>
+          </form>
         </div>
         {/* Guest */}
-        <Link
-          href="/"
-          className="flex items-center justify-start button border border-sixth border-2 rounded-2xl px-4 space-x-6 w-[330px] h-[41px] mt-4 xl:hidden"
-        >
-          ¿No tienes cuenta? <span className="underline">Regístrate</span>
-        </Link>
+        <div className="my-6">
+          <Link
+            href="/login"
+            className="flex flex-col items-center justify-start text-[9px] text-[#8D8D8D]"
+          >
+            ¿Ya sos usuario?{' '}
+            <span className="text-[#3C76A6] font-medium">Iniciar sesión</span>
+          </Link>
+        </div>
+        {/* Google */}
+        <div>
+          <Link
+            href="/login"
+            className="flex items-center justify-center w-[35px]"
+          >
+            <Icon
+              icon="flat-color-icons:google"
+              className="w-[35px] h-[35px]"
+            />
+          </Link>
+        </div>
       </div>
     </main>
   );
