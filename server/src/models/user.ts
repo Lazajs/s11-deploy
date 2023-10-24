@@ -4,7 +4,7 @@ import { type IUser } from '../types'
 import jwt from 'jsonwebtoken'
 
 export class UserModel {
-  static async register ({ email, name, password, birthdate, image }: IUser) {
+  static async register ({ email, name, password, birthdate, image }: Partial<IUser> & { password: string }) {
     try {
       const foundName = await User.findOne({ name })
       const foundMail = await User.findOne({ email })
@@ -21,12 +21,12 @@ export class UserModel {
       })
 
       const newUser = await user.save()
+
       const data = await newUser.toJSON()
       const token = jwt.sign(data, process.env.JWT_SECRET as string, {
         expiresIn: '1d'
       })
 
-      // Populate with data
       return { ...data, token }
     } catch (err) {
       return { error: err }
@@ -41,13 +41,13 @@ export class UserModel {
       const passwordMatch = await bcrypt.compare(password, found.passwordHash)
       if (!passwordMatch) return { error: 'Contraseña incorrecta.' }
 
-      const data = await found.toJSON()
+      const data = await found.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
 
+      console.log(data)
       const token = jwt.sign(data, process.env.JWT_SECRET as string, {
         expiresIn: '1d'
       })
 
-      // Populate with data
       return { ...data, token }
     } catch (err) {
       return { error: err }
