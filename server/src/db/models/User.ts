@@ -10,21 +10,18 @@ const userSchema = new mongoose.Schema<DatabaseUser>({
     type: String,
     required: true
   },
-  nextEvents: {
-    type: Array, // ObjectId
-    required: true,
-    default: []
-  },
-  reviews: {
-    type: Array, // ObjectId
-    required: true,
-    default: []
-  },
-  ownEvents: {
-    type: Array, // ObjectId
-    required: true,
-    default: []
-  },
+  nextEvents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }],
+  reviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Review'
+  }],
+  ownEvents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }],
   passwordHash: {
     type: String,
     required: true
