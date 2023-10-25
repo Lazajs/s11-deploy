@@ -53,4 +53,41 @@ export class UserModel {
       return { error: err }
     }
   }
+
+  static async update (newUser: Partial<IUser> & { password: string }) {
+    try {
+      const { email, name, password, birthdate, image, _id: id } = newUser
+      const found = await User.findById(id)
+      if (!found) return { error: 'Usuario no encontrado.' }
+
+      const passwordHash = password && await bcrypt.hash(password, 10)
+
+      found.email = email ?? found.email
+      found.name = name ?? found.name
+      found.passwordHash = passwordHash ?? found.passwordHash
+      found.birthdate = birthdate ?? found.birthdate
+      found.image = image ?? found.image
+
+      const updatedUser = await found.save()
+
+      const data = await updatedUser.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
+
+      return { user: data }
+    } catch (err) {
+      return { error: err }
+    }
+  }
+
+  static async getById (id: string) {
+    try {
+      const found = await User.findById(id)
+      if (!found) return { error: 'Usuario no encontrado.' }
+
+      const data = await found.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
+
+      return { user: data }
+    } catch (err) {
+      return { error: err }
+    }
+  }
 }

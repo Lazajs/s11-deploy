@@ -14,7 +14,8 @@ export function validateEvent (data: unknown) {
     price: z.number().min(0),
     link: z.string().optional(),
     minAge: z.number().min(0).max(100).optional(),
-    type: z.enum(['Interior', 'Exterior', 'Virtual'])
+    type: z.enum(['Interior', 'Exterior', 'Virtual']),
+    days: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/))
   })
 
   try {
