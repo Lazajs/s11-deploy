@@ -5,10 +5,18 @@ import DropdownCategory from './DropdownCategory';
 import DropdownEvent from './DropdownEvent';
 import DropdownPlace from './DropdownPlace';
 import DropdownDate from './DropdownDate';
+import LoginPopup from './LoginPopup';
 
 const Navbar = () => {
-  const [expanded, setExpanded] = useState(false);
-  const menuRef = useRef(null);
+  const [loginPopupOpen, setLoginPopupOpen] = useState(false);
+
+  const handleLoginButtonClick = () => {
+    setLoginPopupOpen(true);
+  };
+
+  const closeLoginPopup = () => {
+    setLoginPopupOpen(false);
+  };
 
   const [menuSelected, setMenuSelected] = useState(null);
 
@@ -21,6 +29,9 @@ const Navbar = () => {
       setMenuSelected(menu);
     }
   };
+
+  const [expanded, setExpanded] = useState(false);
+  const menuRef = useRef(null);
 
   const handleButtonClick = () => {
     setExpanded(!expanded);
@@ -186,9 +197,13 @@ const Navbar = () => {
           <button className="text-[#D03719] font-semibold px-4 py-2">
             Creá tu evento
           </button>
-          <button className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]">
+          <button
+            className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]"
+            onClick={handleLoginButtonClick}
+          >
             Inicia sesión
           </button>
+          <LoginPopup isOpen={loginPopupOpen} onClose={closeLoginPopup} />
         </div>
       </nav>
     </header>
