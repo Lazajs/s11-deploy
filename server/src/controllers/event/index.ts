@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express'
-import { validateEvent } from './validateEvent'
+import { validateEvent } from '../validations/validateEvent'
 import { EventModel } from '../../models/event'
 import { type IEvent, type IUser } from '../../types'
 

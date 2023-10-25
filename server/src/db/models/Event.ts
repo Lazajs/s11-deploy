@@ -16,6 +16,7 @@ export interface IEvent extends Document {
   minAge: number
   type: EventType
   creator: IUser
+  days: string[]
 }
 
 const eventSchema = new Schema<IEvent>({
@@ -32,7 +33,8 @@ const eventSchema = new Schema<IEvent>({
   price: { type: Number, default: 0 },
   link: { type: String, default: '' },
   minAge: { type: Number, default: 12 },
-  type: { type: String, enum: Object.values(EventType) }
+  type: { type: String, enum: Object.values(EventType) },
+  days: [{ type: String }]
 })
 
 export default model<IEvent>('Event', eventSchema)
