@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
-function RegisterPopup({ isOpen, onClose, onContinueClick }) {
+function RegisterPopup({ isOpen, onClose, onContinueClick, toLogin }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -116,20 +116,20 @@ function RegisterPopup({ isOpen, onClose, onContinueClick }) {
               </div>
             </form>
           </div>
-          {/* Guest */}
+          {/* Login */}
           <div className="my-6">
-            <Link
-              href="/login"
+            <button
+              onClick={toLogin}
               className="flex flex-col items-center justify-start text-[9px] text-[#8D8D8D]"
             >
               ¿Ya sos usuario?{' '}
-              <span className="text-[#3C76A6] font-medium">Iniciar sesión</span>
-            </Link>
+              <span className="text-[#659DCB]">Iniciar sesión</span>
+            </button>
           </div>
           {/* Google */}
           <div>
             <Link
-              href="/login"
+              href="/"
               className="flex items-center justify-center w-[35px]"
             >
               <Icon

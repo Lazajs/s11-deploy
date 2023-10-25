@@ -14,6 +14,7 @@ const Navbar = () => {
 
   const handleLoginButtonClick = () => {
     setLoginPopupOpen(true);
+    setRegisterPopupOpen(false);
   };
 
   const closeLoginPopup = () => {
@@ -236,6 +237,7 @@ const Navbar = () => {
             isOpen={registerPopupOpen}
             onClose={closeRegisterPopup}
             onContinueClick={handleRegister2ButtonClick}
+            toLogin={handleLoginButtonClick}
           />
           <Register2Popup
             isOpen={register2PopupOpen}
