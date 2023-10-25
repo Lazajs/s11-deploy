@@ -4,7 +4,7 @@ import { type IUser } from '../types'
 import jwt from 'jsonwebtoken'
 
 export class UserModel {
-  static async register ({ email, name, password, birthdate, image }: IUser) {
+  static async register ({ email, name, password, birthdate, image }: Partial<IUser> & { password: string }) {
     try {
       const foundName = await User.findOne({ name })
       const foundMail = await User.findOne({ email })
@@ -21,12 +21,12 @@ export class UserModel {
       })
 
       const newUser = await user.save()
+
       const data = await newUser.toJSON()
       const token = jwt.sign(data, process.env.JWT_SECRET as string, {
         expiresIn: '1d'
       })
 
-      // Populate with data
       return { ...data, token }
     } catch (err) {
       return { error: err }
@@ -41,14 +41,51 @@ export class UserModel {
       const passwordMatch = await bcrypt.compare(password, found.passwordHash)
       if (!passwordMatch) return { error: 'Contraseña incorrecta.' }
 
-      const data = await found.toJSON()
+      const data = await found.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
 
+      console.log(data)
       const token = jwt.sign(data, process.env.JWT_SECRET as string, {
         expiresIn: '1d'
       })
 
-      // Populate with data
       return { ...data, token }
+    } catch (err) {
+      return { error: err }
+    }
+  }
+
+  static async update (newUser: Partial<IUser> & { password: string }) {
+    try {
+      const { email, name, password, birthdate, image, _id: id } = newUser
+      const found = await User.findById(id)
+      if (!found) return { error: 'Usuario no encontrado.' }
+
+      const passwordHash = password && await bcrypt.hash(password, 10)
+
+      found.email = email ?? found.email
+      found.name = name ?? found.name
+      found.passwordHash = passwordHash ?? found.passwordHash
+      found.birthdate = birthdate ?? found.birthdate
+      found.image = image ?? found.image
+
+      const updatedUser = await found.save()
+
+      const data = await updatedUser.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
+
+      return { user: data }
+    } catch (err) {
+      return { error: err }
+    }
+  }
+
+  static async getById (id: string) {
+    try {
+      const found = await User.findById(id)
+      if (!found) return { error: 'Usuario no encontrado.' }
+
+      const data = await found.populate('ownEvents').populate('nextEvents').populate('reviews').toJSON()
+
+      return { user: data }
     } catch (err) {
       return { error: err }
     }

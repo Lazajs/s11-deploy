@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { UserModel } from '../../models/user'
-import { validateUser } from './validateUser'
+import { validateUser } from '../validations/validateUser'
 
 interface AuthenticatedRequest extends Request {
   user?: {

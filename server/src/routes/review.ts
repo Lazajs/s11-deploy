@@ -1,15 +1,15 @@
 // routes/reviewRoutes.ts
-import { Router } from "express";
+import { Router } from 'express'
 import {
   createReview,
   updateReview,
-  deleteReview,
-} from "../controllers/Review/reviewController";
+  deleteReview
+} from '../controllers/Review/reviewController'
 
-const router = Router();
+const router = Router()
 
-router.post("/", createReview);
-router.put("/:id", updateReview);
-router.delete("/:id", deleteReview);
+router.post('/', createReview)
+router.put('/:id', updateReview)
+router.delete('/:id', deleteReview)
 
-export { router };
+export { router }
