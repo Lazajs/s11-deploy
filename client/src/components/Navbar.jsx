@@ -5,10 +5,43 @@ import DropdownCategory from './DropdownCategory';
 import DropdownEvent from './DropdownEvent';
 import DropdownPlace from './DropdownPlace';
 import DropdownDate from './DropdownDate';
+import LoginPopup from './LoginPopup';
+import RegisterPopup from './RegisterPopup';
+import Register2Popup from './Register2Popup';
 
 const Navbar = () => {
-  const [expanded, setExpanded] = useState(false);
-  const menuRef = useRef(null);
+  const [loginPopupOpen, setLoginPopupOpen] = useState(false);
+
+  const handleLoginButtonClick = () => {
+    setLoginPopupOpen(true);
+    setRegisterPopupOpen(false);
+  };
+
+  const closeLoginPopup = () => {
+    setLoginPopupOpen(false);
+  };
+
+  const [registerPopupOpen, setRegisterPopupOpen] = useState(false);
+
+  const handleRegisterButtonClick = () => {
+    setRegisterPopupOpen(true);
+    setLoginPopupOpen(false);
+  };
+
+  const closeRegisterPopup = () => {
+    setRegisterPopupOpen(false);
+  };
+
+  const [register2PopupOpen, setRegister2PopupOpen] = useState(false);
+
+  const handleRegister2ButtonClick = () => {
+    setRegister2PopupOpen(true);
+    setRegisterPopupOpen(false);
+  };
+
+  const closeRegister2Popup = () => {
+    setRegister2PopupOpen(false);
+  };
 
   const [menuSelected, setMenuSelected] = useState(null);
 
@@ -21,6 +54,9 @@ const Navbar = () => {
       setMenuSelected(menu);
     }
   };
+
+  const [expanded, setExpanded] = useState(false);
+  const menuRef = useRef(null);
 
   const handleButtonClick = () => {
     setExpanded(!expanded);
@@ -186,9 +222,27 @@ const Navbar = () => {
           <button className="text-[#D03719] font-semibold px-4 py-2">
             Creá tu evento
           </button>
-          <button className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]">
+          <button
+            className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]"
+            onClick={handleLoginButtonClick}
+          >
             Inicia sesión
           </button>
+          <LoginPopup
+            isOpen={loginPopupOpen}
+            onClose={closeLoginPopup}
+            onRegisterClick={handleRegisterButtonClick}
+          />
+          <RegisterPopup
+            isOpen={registerPopupOpen}
+            onClose={closeRegisterPopup}
+            onContinueClick={handleRegister2ButtonClick}
+            toLogin={handleLoginButtonClick}
+          />
+          <Register2Popup
+            isOpen={register2PopupOpen}
+            onClose={closeRegister2Popup}
+          />
         </div>
       </nav>
     </header>
