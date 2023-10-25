@@ -1,15 +1,17 @@
 // routes/reviewRoutes.ts
-import { Router } from 'express'
+import { Router } from "express";
 import {
   createReview,
   updateReview,
-  deleteReview
-} from '../controllers/Review/reviewController'
+  deleteReview,
+} from "../controllers/Review/reviewController";
+import validateToken from "../middlewares/validateToken";
+import populateUser from "../middlewares/populateUser";
 
-const router = Router()
+const router = Router();
 
-router.post('/', createReview)
-router.put('/:id', updateReview)
-router.delete('/:id', deleteReview)
+router.post("/", validateToken, populateUser, createReview);
+router.put("/:id", validateToken, populateUser, updateReview);
+router.delete("/:id", validateToken, populateUser, deleteReview);
 
-export { router }
+export { router };
