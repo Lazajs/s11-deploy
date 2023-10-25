@@ -6,6 +6,8 @@ import DropdownEvent from './DropdownEvent';
 import DropdownPlace from './DropdownPlace';
 import DropdownDate from './DropdownDate';
 import LoginPopup from './LoginPopup';
+import RegisterPopup from './RegisterPopup';
+import Register2Popup from './Register2Popup';
 
 const Navbar = () => {
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
@@ -16,6 +18,28 @@ const Navbar = () => {
 
   const closeLoginPopup = () => {
     setLoginPopupOpen(false);
+  };
+
+  const [registerPopupOpen, setRegisterPopupOpen] = useState(false);
+
+  const handleRegisterButtonClick = () => {
+    setRegisterPopupOpen(true);
+    setLoginPopupOpen(false);
+  };
+
+  const closeRegisterPopup = () => {
+    setRegisterPopupOpen(false);
+  };
+
+  const [register2PopupOpen, setRegister2PopupOpen] = useState(false);
+
+  const handleRegister2ButtonClick = () => {
+    setRegister2PopupOpen(true);
+    setRegisterPopupOpen(false);
+  };
+
+  const closeRegister2Popup = () => {
+    setRegister2PopupOpen(false);
   };
 
   const [menuSelected, setMenuSelected] = useState(null);
@@ -203,7 +227,20 @@ const Navbar = () => {
           >
             Inicia sesión
           </button>
-          <LoginPopup isOpen={loginPopupOpen} onClose={closeLoginPopup} />
+          <LoginPopup
+            isOpen={loginPopupOpen}
+            onClose={closeLoginPopup}
+            onRegisterClick={handleRegisterButtonClick}
+          />
+          <RegisterPopup
+            isOpen={registerPopupOpen}
+            onClose={closeRegisterPopup}
+            onContinueClick={handleRegister2ButtonClick}
+          />
+          <Register2Popup
+            isOpen={register2PopupOpen}
+            onClose={closeRegister2Popup}
+          />
         </div>
       </nav>
     </header>

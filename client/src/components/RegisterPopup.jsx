@@ -3,10 +3,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
-function LoginPopup({ isOpen, onClose, onRegisterClick }) {
+function RegisterPopup({ isOpen, onClose, onContinueClick }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e) => {
@@ -18,7 +19,7 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Perform login logic here
+    // Perform register logic here
     console.log('Submitted:', formData);
     onClose(); // Close the popup after submission
   }
@@ -38,15 +39,9 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
               <Icon icon="ph:x" className="text-[#54595F] w-[20px] h-[20px]" />
             </button>
           </div>
-          {/* Logo */}
-          <div className="mt-10">
-            <img src="/login/logo.svg" alt="Logo" className="w-[131px]" />
-          </div>
           {/* Title */}
-          <div className="mt-6 mb-6 w-full">
-            <h1 className="font-bold text-[27px] text-left">
-              ¿Listo para empezar?
-            </h1>
+          <div className="mt-10 mb-6 w-full">
+            <h1 className="font-semibold text-[32px] text-left">Registrate</h1>
           </div>
 
           <div>
@@ -66,12 +61,12 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
                     onChange={handleChange}
                     required
                     placeholder="juan@mail.com"
-                    className="border border-[#1E1E1E] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
+                    className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
                   />
                 </div>
               </div>
               {/* Password */}
-              <div>
+              <div className="mb-6">
                 <div className="flex flex-col font-medium">
                   <label htmlFor="password" className="text-[11px] mb-2.5">
                     Contraseña
@@ -88,34 +83,53 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
                   />
                 </div>
               </div>
-              {/* Forgot Password */}
-              <div className="text-[#659DCB] text-[9.5px] text-right mt-2 mr-2">
-                <Link href="/">Olvidé la contraseña</Link>
+              {/* Confirm Password */}
+              <div>
+                <div className="flex flex-col font-medium">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="text-[11px] mb-2.5"
+                  >
+                    Repetir contraseña
+                  </label>
+                  <input
+                    type="confirmPassword"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword || ''}
+                    onChange={handleChange}
+                    required
+                    placeholder="Contraseña"
+                    className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
+                  />
+                </div>
               </div>
               {/* Submit */}
-              <div className="mt-8 w-[303px] h-[36px]">
+              <div className="mt-10 w-[303px] h-[36px]">
                 <button
-                  type="submit"
-                  className="border rounded-md bg-[#659DCB] outline-none w-full h-full text-white text-[11px] font-light"
+                  type="button"
+                  onClick={onContinueClick}
+                  className="border rounded-md bg-[#659DCB] outline-none w-full h-full text-white text-[11px]"
                 >
-                  Iniciar sesión
+                  Continuar
                 </button>
               </div>
             </form>
           </div>
-          {/* New user */}
-          <div className="my-4">
-            <button
-              onClick={onRegisterClick}
+          {/* Guest */}
+          <div className="my-6">
+            <Link
+              href="/login"
               className="flex flex-col items-center justify-start text-[9px] text-[#8D8D8D]"
             >
-              ¿Nuevo usuario? <span className="text-[#659DCB]">Registrate</span>
-            </button>
+              ¿Ya sos usuario?{' '}
+              <span className="text-[#3C76A6] font-medium">Iniciar sesión</span>
+            </Link>
           </div>
           {/* Google */}
-          <div className="mt-2">
+          <div>
             <Link
-              href="/"
+              href="/login"
               className="flex items-center justify-center w-[35px]"
             >
               <Icon
@@ -130,4 +144,4 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
   );
 }
 
-export default LoginPopup;
+export default RegisterPopup;
