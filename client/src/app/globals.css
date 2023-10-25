@@ -7,11 +7,6 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #EF7548; /* Color del "pulgar" de la barra de desplazamiento */
-  border-radius: 100%;
+  background-color: #EF7548;
+  border-radius: 2.5px;
 }
-
-/* Para navegadores basados en Firefox */
-/* Asegúrate de que estás usando el navegador Firefox para aplicar estos estilos */
-scrollbar-width: thin;
-scrollbar-color: #4C51BF #E5E7EB;
