@@ -14,6 +14,62 @@ components:
       in: header
       name: session
   schemas:
+    Barrio:
+      type: string
+      enum:
+        - Palermo
+        - Belgrano
+        - Recoleta
+        - San Telmo
+        - La Boca
+        - San Cristóbal
+        - Almagro
+        - Caballito
+        - Flores
+        - Villa Crespo
+        - Boedo
+        - Villa Urquiza
+        - Villa Devoto
+        - Saavedra
+        - Mataderos
+        - Nuñez
+        - Barracas
+        - Parque Patricios
+        - Villa del Parque
+        - Villa Lugano
+        - Villa Riachuelo
+        - Villa Soldati
+        - Pompeya
+        - Colegiales
+        - Agronomía
+        - Villa Ortúzar
+        - Parque Chacabuco
+        - Parque Avellaneda
+        - Monte Castro
+        - Parque Chas
+        - Nueva Pompeya
+        - Villa Santa Rita
+        - Villa General Mitre
+        - Coghlan
+        - Villa Pueyrredón
+    Category:
+      type: string
+      enum:
+        - Gastronómicos
+        - Culturales
+        - Deportivos
+        - Educativos
+        - Sociales y de entretenimiento
+        - Beneficios y causas benéficas
+        - Familiares y niños
+        - Moda y belleza
+        - Conferencias y convenciones
+    EventType:
+      type: string
+      enum:
+        - Interior
+        - Exterior
+        - Virtual
     Event:
       type: object
       properties:
@@ -30,9 +86,6 @@ components:
         description:
           type: string
           example: 'Event description'
-        place:
-          type: string
-          example: 'Event place'
         reviews: 
           type: array
           items:
@@ -70,6 +123,9 @@ components:
           items:
             type: string
             example: ['2004-12-20', '2004-12-21']
+        place:
+          type: string
+          example: 'Boedo'
     User:
       type: object
       properties:
@@ -105,6 +161,11 @@ components:
           type: string
           format: date
           example: '1990-01-15'
+        interests:
+          type: array
+          items:
+            type: string
+            example: 'Culturales'
         _id:
           type: string
           example: '5f9e2b3b9d9d9d9d9d9d9d9d'
@@ -166,6 +227,40 @@ paths:
                   type: string
                   format: uri
                   example: 'https://example.com/image.jpg'
+                interests:
+                  type: array
+                  items:
+                    type: string
+                    example: 'Culturales'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: An unexpected error occurred
   /api/v1/user/{userId}:
     get:
       summary: Get a specific user
@@ -246,7 +341,7 @@ paths:
               imgUrls: ['https://www.google.com/']
               title: 'Event title'
               description: 'Event description'
-              place: 'Event place'
+              place: 'Boedo'
               schedule: 12
               duration: 2
               category: Culturales
@@ -456,11 +551,17 @@ paths:
                   type: string
                   format: uri
                   example: 'https://example.com/image.jpg'
+                interests:
+                  type: array
+                  items:
+                    type: string
+                    example: 'Culturales'
               required: 
                 - email
                 - name
                 - password
                 - birthdate
+                - interests
       responses:
         '201':
           description: User signed up successfully
