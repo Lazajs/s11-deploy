@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import CheckboxInput from './CheckboxInput';
 
-function Register2Popup({ isOpen, onClose, onContinueClick }) {
-  const [formData, setFormData] = useState({
+function Register2Popup({ isOpen, onClose, formData }) {
+  const [newFormData, setNewFormData] = useState({
     name: '',
     birthDate: '',
   });
@@ -12,8 +12,9 @@ function Register2Popup({ isOpen, onClose, onContinueClick }) {
   const [selectedInterests, setSelectedInterests] = useState([]);
 
   const handleChange = (e) => {
-    setFormData({
+    setNewFormData({
       ...formData,
+      ...newFormData,
       [e.target.name]: e.target.value,
     });
   };
@@ -32,11 +33,11 @@ function Register2Popup({ isOpen, onClose, onContinueClick }) {
   function handleSubmit(e) {
     e.preventDefault();
     // Perform register logic here
-    console.log('Submitted:', formData);
+    console.log('Submitted:', newFormData);
     if (selectedInterests.length > 0) {
       // Realizar la acción de registro
       console.log('Intereses seleccionados:', selectedInterests);
-      onContinueClick(); // Trigger the continuation to Register Page
+      onClose();
     } else {
       alert('Debes seleccionar al menos un interés antes de registrarte.');
     }
@@ -77,7 +78,7 @@ function Register2Popup({ isOpen, onClose, onContinueClick }) {
                     type="name"
                     id="name"
                     name="name"
-                    value={formData.name || ''}
+                    value={newFormData.name || ''}
                     onChange={handleChange}
                     required
                     placeholder="Nombre"
@@ -95,7 +96,7 @@ function Register2Popup({ isOpen, onClose, onContinueClick }) {
                     type="birthDate"
                     id="birthDate"
                     name="birthDate"
-                    value={formData.birthDate || ''}
+                    value={newFormData.birthDate || ''}
                     onChange={handleChange}
                     required
                     placeholder="25/12/1989"
