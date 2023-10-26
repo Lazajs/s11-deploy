@@ -3,7 +3,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
-function RegisterPopup({ isOpen, onClose, onContinueClick, toLogin }) {
+function RegisterPopup({
+  isOpen,
+  onClose,
+  onContinueClick,
+  toLogin,
+  onDataChange,
+}) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -11,10 +17,14 @@ function RegisterPopup({ isOpen, onClose, onContinueClick, toLogin }) {
   });
 
   const handleChange = (e) => {
-    setFormData({
+    const newFormData = {
       ...formData,
       [e.target.name]: e.target.value,
-    });
+    };
+    setFormData(newFormData);
+
+    // Call the onDataChange function to update the parent component's state
+    onDataChange(newFormData);
   };
 
   function handleSubmit(e) {
@@ -93,7 +103,7 @@ function RegisterPopup({ isOpen, onClose, onContinueClick, toLogin }) {
                     Repetir contraseña
                   </label>
                   <input
-                    type="confirmPassword"
+                    type="password"
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword || ''}

@@ -84,6 +84,18 @@ const Navbar = () => {
     };
   }, [expanded]);
 
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
+    birthDate: '',
+  });
+
+  const handleFormDataChange = (newData) => {
+    setFormData(newData);
+  };
+
   return (
     <header
       className={`bg-white shadow-md shadow-blue-100 transition-[height] duration-500 ${
@@ -238,10 +250,12 @@ const Navbar = () => {
             onClose={closeRegisterPopup}
             onContinueClick={handleRegister2ButtonClick}
             toLogin={handleLoginButtonClick}
+            onDataChange={handleFormDataChange}
           />
           <Register2Popup
             isOpen={register2PopupOpen}
             onClose={closeRegister2Popup}
+            formData={formData}
           />
         </div>
       </nav>
