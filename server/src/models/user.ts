@@ -4,8 +4,9 @@ import { type IUser } from '../types'
 import jwt from 'jsonwebtoken'
 
 export class UserModel {
-  static async register ({ email, name, password, birthdate, image }: Partial<IUser> & { password: string }) {
+  static async register (userData: Partial<IUser> & { password: string }) {
     try {
+      const { email, name, password } = userData
       const foundName = await User.findOne({ name })
       const foundMail = await User.findOne({ email })
       if (foundName || foundMail) return { error: 'Este nombre de usuario o correo electrónico está en uso.' }
@@ -13,11 +14,8 @@ export class UserModel {
       const passwordHash = password && await bcrypt.hash(password, 10)
 
       const user = new User({
-        email,
-        name,
-        passwordHash,
-        birthdate,
-        image
+        ...userData,
+        passwordHash
       })
 
       const newUser = await user.save()
@@ -56,7 +54,7 @@ export class UserModel {
 
   static async update (newUser: Partial<IUser> & { password: string }) {
     try {
-      const { email, name, password, birthdate, image, _id: id } = newUser
+      const { email, name, password, birthdate, image, _id: id, interests } = newUser
       const found = await User.findById(id)
       if (!found) return { error: 'Usuario no encontrado.' }
 
@@ -67,6 +65,7 @@ export class UserModel {
       found.passwordHash = passwordHash ?? found.passwordHash
       found.birthdate = birthdate ?? found.birthdate
       found.image = image ?? found.image
+      found.interests = interests ?? found.interests
 
       const updatedUser = await found.save()
 
