@@ -1,10 +1,13 @@
 import express from "express";
 import http from "http";
 import cors from "cors";
+import passport from "passport";
+import session from "express-session";
 import { PORT } from "./utils/config";
 import connect from "./db/connect";
 import { router } from "./routes";
 import { configureSocketIO } from "./sockets/socket";
+import "./utils/passport";
 
 const app = express();
 app.disable("x-powered-by");
@@ -30,6 +33,21 @@ const corsOptions: cors.CorsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: false, // Utilizar sólo en producción true
+      maxAge: 24 * 60 * 60 * 1000, // Tiempo de vida de la cookie en milisegundos (24 horas en este caso)
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(router);
 
