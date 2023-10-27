@@ -14,7 +14,7 @@ const setViewedState = async (req: Request, res: Response) => {
       { $set: { viewed: true } }
     )
 
-    return res.status(200).json({ message: `Messages from ${userId} marked as viewed` })
+    return res.status(200).json({ message: `Messages from ${receiverId} marked as viewed` })
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json({ message: error.message, error: 'Set Viewed State' })
