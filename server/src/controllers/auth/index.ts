@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { UserModel } from '../../models/user'
-import { validateUser } from './validateUser'
+import { validateUser } from '../validations/validateUser'
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -11,8 +11,6 @@ interface AuthenticatedRequest extends Request {
 
 export class AuthController {
   static async signup (req: Request, res: Response) {
-    const { email, name, password, birthdate, image } = req.body
-
     const { error } = validateUser(req.body)
 
     if (error) {
@@ -20,7 +18,7 @@ export class AuthController {
       return
     }
 
-    const result = await UserModel.register({ image, email, name, password, birthdate })
+    const result = await UserModel.register(req.body)
 
     if (result?.error) {
       res.status(400).json(result.error)

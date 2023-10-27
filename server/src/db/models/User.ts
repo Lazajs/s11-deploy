@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { type DatabaseUser } from '../../types'
+import { type DatabaseUser, Category } from '../../types'
 
 const userSchema = new mongoose.Schema<DatabaseUser>({
   email: {
@@ -43,7 +43,11 @@ const userSchema = new mongoose.Schema<DatabaseUser>({
   },
   googleId: {
     type: String
-  }
+  },
+  interests: [{
+    type: String,
+    enum: Object.values(Category)
+  }]
 })
 
 export default mongoose.models.User ||
