@@ -29,7 +29,7 @@ export default function Home () {
     },
   ]
   return (
-    <main className="flex flex-col items-center justify-between gap-16 p-10">
+    <main className="flex flex-col items-center justify-between gap-16 p-10 z-0">
       <div className="max-w-[78.4375rem] mx-auto relative rounded-[1.5625rem] mt-28">
         <Image src='/banner.png' width={1300} height={100} className="w-full" />
         <div className="absolute top-0 left-44 skew-x-[30deg] w-[20rem] h-full bg-black/30"></div>
