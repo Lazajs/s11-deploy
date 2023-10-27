@@ -9,6 +9,6 @@ const router = express.Router()
 
 router.post('/', sendChatMessage)
 router.get('/:receiverId', getAllChatMessages)
-router.post('/:userId/:senderId', setViewedState)
+router.put('/:receiverId/:senderId', setViewedState)
 
 export { router }
