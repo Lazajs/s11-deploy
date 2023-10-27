@@ -109,56 +109,62 @@ function Register2Popup({ isOpen, onClose, formData }) {
                 <p className="mb-4">¿Qué tipos de eventos te interesan?</p>
                 <CheckboxInput
                   label="Gastronómicos"
-                  name="gastronomicos"
-                  checked={selectedInterests.includes('gastronómicos')}
+                  name="Gastronómicos"
+                  checked={selectedInterests.includes('Gastronómicos')}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Culturales"
-                  name="culturales"
-                  checked={selectedInterests.includes('culturales')}
+                  name="Culturales"
+                  checked={selectedInterests.includes('Culturales')}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Deportivos"
-                  name="deportivos"
-                  checked={selectedInterests.includes('deportivos')}
+                  name="Deportivos"
+                  checked={selectedInterests.includes('Deportivos')}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Educativos"
-                  name="educativos"
-                  checked={selectedInterests.includes('educativos')}
+                  name="Educativos"
+                  checked={selectedInterests.includes('Educativos')}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Familiares y niños"
-                  name="familiares"
-                  checked={selectedInterests.includes('familiares')}
+                  name="Familiares y niños"
+                  checked={selectedInterests.includes('Familiares y niños')}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Conferencias y convenciones"
-                  name="conferencias"
-                  checked={selectedInterests.includes('conferencias')}
+                  name="Conferencias y convenciones"
+                  checked={selectedInterests.includes(
+                    'Conferencias y convenciones',
+                  )}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Causas benéficas"
-                  name="causas"
-                  checked={selectedInterests.includes('causas')}
+                  name="Beneficios y causas benéficas"
+                  checked={selectedInterests.includes(
+                    'Beneficios y causas benéficas',
+                  )}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Sociales y de entretenimiento"
-                  name="sociales"
-                  checked={selectedInterests.includes('sociales')}
+                  name="Sociales y de entretenimiento"
+                  checked={selectedInterests.includes(
+                    'Sociales y de entretenimiento',
+                  )}
                   onChange={handleInterestChange}
                 />
                 <CheckboxInput
                   label="Moda y belleza"
-                  name="moda"
-                  checked={selectedInterests.includes('moda')}
+                  name="Moda y belleza"
+                  checked={selectedInterests.includes('Moda y belleza')}
                   onChange={handleInterestChange}
                 />
               </div>
