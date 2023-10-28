@@ -2,21 +2,21 @@ import { type Document, model, Schema } from 'mongoose'
 import { type IUser, type IReview, Category, EventType, Barrio } from '../../types'
 
 export interface IEvent extends Document {
-  imgUrls: string[]
-  description: string
-  title: string
-  place: string
-  reviews?: IReview[]
-  people?: IUser[]
-  schedule: number
-  duration: number
-  category: Category
-  price: number
-  link: string
-  minAge: number
-  type: EventType
-  creator: IUser
-  days: string[]
+  imgUrls: string[];
+  description: string;
+  title: string;
+  place: string;
+  reviews?: IReview[];
+  people?: IUser[];
+  schedule: number;
+  duration: number;
+  category: Category;
+  price: number;
+  link: string;
+  minAge: number;
+  type: EventType;
+  creator: IUser;
+  days: string[];
 }
 
 const eventSchema = new Schema<IEvent>({
@@ -31,10 +31,10 @@ const eventSchema = new Schema<IEvent>({
   duration: { type: Number },
   category: { type: String, enum: Object.values(Category) },
   price: { type: Number, default: 0 },
-  link: { type: String, default: '' },
+  link: { type: String, default: "" },
   minAge: { type: Number, default: 12 },
   type: { type: String, enum: Object.values(EventType) },
-  days: [{ type: String }]
-})
+  days: [{ type: String }],
+});
 
-export default model<IEvent>('Event', eventSchema)
+export default model<IEvent>("Event", eventSchema);
