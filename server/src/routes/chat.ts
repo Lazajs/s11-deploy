@@ -7,8 +7,8 @@ import {
   setViewedState,
 } from "../controllers/Chat";
 
-router.post("/", sendChatMessage);
-router.get("/:receiverId", getAllChatMessages);
-router.post("/:userId/:senderId", setViewedState);
+router.post('/', sendChatMessage)
+router.get('/:receiverId', getAllChatMessages)
+router.put('/:receiverId/:senderId', setViewedState)
 
 export { router };

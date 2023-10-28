@@ -188,6 +188,32 @@ components:
         sender: 'senderUserId'
         receiver: 'receiverUserId'
         message: 'Hello, this is a message.'
+    Chat:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for a chat message.
+        sender:
+          type: string
+          description: The ID of the sender of the chat message.
+        receiver:
+          type: string
+          description: The ID of the receiver of the chat message.
+        message:
+          type: string
+          description: The content of the chat message.
+        viewed:
+          type: boolean
+          description: A boolean flag indicating whether the message has been viewed.
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of when the chat message was created.
+      required:
+        - sender
+        - receiver
+        - message
 
 security:
   - BearerAuth: []
@@ -717,3 +743,159 @@ paths:
                     type: string
       tags:
         - Notifications
+  /api/v1/chat:
+    post:
+      tags:
+        - Chat
+      summary: "Send Chat Message"
+      description: "Send a chat message from the sender to the receiver."
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              senderId:
+                type: string
+                description: "ID of the sender"
+              receiverId:
+                type: string
+                description: "ID of the receiver"
+              message:
+                type: string
+                description: "Chat message content"
+      responses:
+        201:
+          description: "Chat Message Created"
+          schema:
+            type: object
+            properties:
+              newMessage:
+                type: object
+                description: "Details of the created chat message"
+              message:
+                type: string
+                description: "Success message"
+        400:
+          description: "Bad request"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"
+        500:
+          description: "Internal server error"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"      
+  /api/v1/chat/{receiverId}:
+    get:
+      tags:
+        - Chat
+      summary: "Get Chat Messages"
+      description: "Retrieve chat messages for a given receiver."
+      parameters:
+        - name: receiverId
+          in: path
+          required: true
+          type: string
+          description: "The ID of the receiver."
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                description: "Chat conversations"
+        404:
+          description: "No conversations found"
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                description: "Message indicating no conversations found"
+        400:
+          description: "Bad request"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"
+        500:
+          description: "Internal server error"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"
+  /api/v1/chat/{receiverId}/{senderId}:
+    put:
+      tags:
+        - Chat
+      summary: "Set Chat Messages as Viewed"
+      description: "Set chat messages from a sender as viewed by a specific user."
+      parameters:
+        - name: receiverId
+          in: path
+          required: true
+          type: string
+          description: "ID of the user viewing the messages."
+        - name: senderId
+          in: path
+          required: true
+          type: string
+          description: "ID of the sender of the messages to be marked as viewed."
+      responses:
+        200:
+          description: "Messages from 'user' marked as viewed"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Success message"
+        400:
+          description: "Bad request"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"
+        500:
+          description: "Internal server error"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Error message"
+              error:
+                type: string
+                description: "Error type"
+    

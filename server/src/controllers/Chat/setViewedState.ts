@@ -3,18 +3,18 @@ import { Request, Response } from 'express'
 
 const setViewedState = async (req: Request, res: Response) => {
   try {
-    const { userId, senderId } = req.params || {}
+    const { receiverId, senderId } = req.params || {}
 
-    if (!userId || !senderId) {
-      throw new Error('All fields are required (userId, senderId).')
+    if (!receiverId || !senderId) {
+      throw new Error('All fields are required (receiverId, senderId).')
     }
 
     await Chat.updateMany(
-      { sender: senderId, receiver: userId, viewed: false },
+      { sender: senderId, receiver: receiverId, viewed: false },
       { $set: { viewed: true } }
     )
 
-    return res.status(200).json({ message: `Messages from ${userId} set as viewed` })
+    return res.status(200).json({ message: `Messages from ${receiverId} marked as viewed` })
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json({ message: error.message, error: 'Set Viewed State' })
