@@ -11,23 +11,15 @@ interface AuthenticatedRequest extends Request {
 }
 
 export class AuthController {
-  static async signup(req: Request, res: Response) {
-    const { email, name, password, birthdate, image } = req.body;
-
-    const { error } = validateUser(req.body);
+  static async signup (req: Request, res: Response) {
+    const { error } = validateUser(req.body)
 
     if (error) {
       res.status(400).json({ error });
       return;
     }
 
-    const result = await UserModel.register({
-      image,
-      email,
-      name,
-      password,
-      birthdate,
-    });
+    const result = await UserModel.register(req.body)
 
     if (result?.error) {
       res.status(400).json(result.error);
