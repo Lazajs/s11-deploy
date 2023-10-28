@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import ReviewModel from "../../db/models/Review";
-import Event from "../../db/models/Review";
-import User from "../../db/models/Review";
+import Event from "../../db/models/Event";
+import User from "../../db/models/User";
 import { IUser } from "../../types";
 
 export const createReview = async (req: Request, res: Response) => {
