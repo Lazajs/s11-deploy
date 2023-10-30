@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import mongoose from 'mongoose'
 import Chat from '../../db/models/Chat'
 import { notifyChatMessage } from '../../sockets/socket'
@@ -17,7 +17,7 @@ const sendChatMessage = async (req: Request, res: Response) => {
     const newChatMessage = new Chat({
       sender: senderIdObject,
       receiver: receiverIdObject,
-      message,
+      message
     })
 
     await newChatMessage.save()

@@ -16,7 +16,11 @@ export function validateEvent (data: unknown) {
     link: z.string().optional(),
     minAge: z.number().min(0).max(100).optional(),
     type: z.nativeEnum(EventType),
-    days: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/))
+    days: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+    faqs: z.array(z.object({
+      question: z.string().min(4).max(50),
+      answer: z.string().min(4).max(250)
+    })).optional().default([])
   })
 
   try {

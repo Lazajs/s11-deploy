@@ -1,14 +1,14 @@
-import express from "express";
-const router = express.Router();
+import express from 'express'
 
 import {
   sendChatMessage,
   getAllChatMessages,
-  setViewedState,
-} from "../controllers/Chat";
+  setViewedState
+} from '../controllers/Chat'
+const router = express.Router()
 
 router.post('/', sendChatMessage)
 router.get('/:receiverId', getAllChatMessages)
 router.put('/:receiverId/:senderId', setViewedState)
 
-export { router };
+export { router }

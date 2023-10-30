@@ -1,5 +1,5 @@
 import Chat from '../../db/models/Chat'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 
 const setViewedState = async (req: Request, res: Response) => {
   try {

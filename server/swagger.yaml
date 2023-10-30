@@ -126,6 +126,17 @@ components:
         place:
           type: string
           example: 'Boedo'
+        faqs:
+          type: array
+          items:
+            type: object
+            properties:
+              question:
+                type: string
+                example: 'Some question?'
+              answer:
+                type: string
+                example: 'Some answer.'
     User:
       type: object
       properties:
@@ -475,6 +486,12 @@ paths:
               minAge: 12
               type: Virtual
               days: ['2004-12-20', '2004-12-21']
+              faqs: [
+                {
+                  question: 'Some question?',
+                  answer: 'Some answer.'
+                }
+              ]
       responses:
         '200':
           description: Event updated successfully
