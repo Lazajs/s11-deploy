@@ -18,9 +18,21 @@ export class EventController {
   }
 
   static async getEvents (req: Request, res: Response) {
-    const result = await EventModel.getAll() // Filters here
 
-    if (result?.error) return res.status(500).json({ error: result.error })
+    const filters = {
+      place: req.query.place || undefined,
+      price: req.query.price || undefined,
+      minAge: req.query.minAge || undefined,
+      description: req.query.description || undefined
+    }
+
+    let result
+
+    if (Object.values(filters).every(value => value === undefined)) {
+      result = await EventModel.getAll()
+    } else {
+      result = await EventModel.getAll(filters)
+    }
 
     return res.status(200).json(result.events)
   }
