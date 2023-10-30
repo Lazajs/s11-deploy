@@ -20,11 +20,10 @@ export class EventController {
   static async getEvents (req: Request, res: Response) {
 
     const filters = {
-      place: req.query.place || undefined,
-      price: req.query.price || undefined,
-      minAge: req.query.minAge || undefined,
-      description: req.query.description || undefined
-    }
+      place: req.query.place ?? undefined,
+      price: req.query.price ?? undefined,
+      location: req.query.location ?? undefined,
+    };
 
     let result
 
