@@ -1,4 +1,4 @@
-import { Document, model, Schema } from 'mongoose'
+import { type Document, model, Schema } from 'mongoose'
 
 export interface IChat extends Document {
   sender: string
@@ -25,7 +25,7 @@ const chatSchema = new Schema<IChat>({
   },
   viewed: {
     type: Boolean,
-    default: false,
+    default: false
   },
   timestamp: {
     type: Date,

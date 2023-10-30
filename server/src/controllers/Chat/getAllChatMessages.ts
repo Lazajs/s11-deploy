@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express'
 import mongoose from 'mongoose'
 
 import Chat from '../../db/models/Chat'
@@ -6,7 +6,7 @@ import User from '../../db/models/User'
 
 const getAllChatMessages = async (req: Request, res: Response) => {
   try {
-    const myUserId = req.params?.receiverId as string
+    const myUserId = req.params?.receiverId
 
     if (!myUserId) {
       throw new Error('Field receiverId is required.')
@@ -17,21 +17,21 @@ const getAllChatMessages = async (req: Request, res: Response) => {
     const messages = await Chat.find({
       $or: [
         { receiver: receiverIdObject }
-      ],
+      ]
     }).sort({ timestamp: 1 })
 
     if (messages.length > 0) {
-      const conversations: Record<string, { userData: any, messages: any[] }> = {};
+      const conversations: Record<string, { userData: any, messages: any[] }> = {}
 
       const userIds = Array.from(new Set(messages.flatMap((message) => [message.sender, message.receiver])))
 
       const users = await User.find({ _id: { $in: userIds } })
 
-      const userDataMap: Record<string, { avatar: string, name: string }> = {};
+      const userDataMap: Record<string, { avatar: string, name: string }> = {}
       users.forEach((user) => {
         userDataMap[user._id.toString()] = {
           avatar: user.image,
-          name: user.name,
+          name: user.name
         }
       })
 
@@ -40,7 +40,7 @@ const getAllChatMessages = async (req: Request, res: Response) => {
         if (!conversations[otherUserId]) {
           conversations[otherUserId] = {
             userData: userDataMap[otherUserId],
-            messages: [],
+            messages: []
           }
         }
         conversations[otherUserId].messages.push(message)

@@ -43,13 +43,13 @@ const loadNotifications = async (userId: string) => {
     throw new Error('Socket.io has not been configured yet.')
   }
 
-  const userIdObject = new mongoose.Types.ObjectId(userId);
+  const userIdObject = new mongoose.Types.ObjectId(userId)
 
   const getNotifications = await Message.aggregate([
     {
       $match: {
-        receiver: userIdObject,
-      },
+        receiver: userIdObject
+      }
     },
     {
       $lookup: {
@@ -57,26 +57,26 @@ const loadNotifications = async (userId: string) => {
         localField: 'receiver',
         foreignField: '_id',
         as: 'userData'
-      },
+      }
     },
     {
-      $unwind: '$userData',
+      $unwind: '$userData'
     },
     {
       $project: {
         _id: 0,
         'userData.name': 1,
         'userData.image': {
-          $ifNull: 
+          $ifNull:
           [
-            '$userData.image', 
+            '$userData.image',
             'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
-          ],
+          ]
         },
         message: 1,
         timestamp: 1
-      },
-    },
+      }
+    }
   ])
 
   // Emit the new notification to the specific client
@@ -94,7 +94,7 @@ const notifyChatMessage = async (sender: string, receiver: string, message: stri
     message,
     timestamp
   }
-  
+
   io.to(receiver).emit('chatNotifications', data)
 }
 
