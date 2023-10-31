@@ -21,9 +21,10 @@ export class EventModel {
     }
   }
 
-  static async getAll () {
+  static async getAll(filters = {}) {
     try {
-      const events = await Event.find()
+      const events = await Event.find(filters)
+  
       return { events, error: false }
     } catch (e) {
       return { error: e }

@@ -3,6 +3,10 @@ import { validateEvent } from '../validations/validateEvent'
 import { EventModel } from '../../models/event'
 import { type IEvent, type IUser } from '../../types'
 
+type QueryParameters = {
+  [key: string]: string | undefined
+}
+
 export class EventController {
   static async newEvent (req: Request, res: Response) {
     const { error } = validateEvent(req.body)
@@ -18,9 +22,28 @@ export class EventController {
   }
 
   static async getEvents (req: Request, res: Response) {
-    const result = await EventModel.getAll() // Filters here
+    
+    const filters: QueryParameters = {
+      place: req.query.place as string ?? undefined,
+      price: req.query.price as string ?? undefined,
+      minAge: req.query.minAge as string ?? undefined,
+      location: req.query.location as string ?? undefined
+    }
 
-    if (result?.error) return res.status(500).json({ error: result.error })
+    const cleanedFilters: QueryParameters = Object.keys(filters).reduce((acc, key) => {
+      if (filters[key] !== undefined) {
+        acc[key] = filters[key]
+      }
+      return acc
+    }, {} as QueryParameters)
+
+    let result
+
+    if (Object.keys(cleanedFilters).length === 0) {
+      result = await EventModel.getAll()
+    } else {
+      result = await EventModel.getAll(cleanedFilters)
+    }
 
     return res.status(200).json(result.events)
   }
