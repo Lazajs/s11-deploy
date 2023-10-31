@@ -26,7 +26,7 @@ export class EventController {
 
   static async getEvents (req: Request, res: Response) {
     
-    const filters = {
+    const filters: QueryParameters = {
       place: req.query.place ?? undefined,
       price: req.query.price ?? undefined,
       minAge: req.query.minAge ?? undefined,
