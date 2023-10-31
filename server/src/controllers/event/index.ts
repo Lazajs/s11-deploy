@@ -3,6 +3,13 @@ import { validateEvent } from '../validations/validateEvent'
 import { EventModel } from '../../models/event'
 import { type IEvent, type IUser } from '../../types'
 
+type QueryParameters = {
+  place?: string
+  price?: string
+  minAge?: string
+  location?: string
+}
+
 export class EventController {
   static async newEvent (req: Request, res: Response) {
     const { error } = validateEvent(req.body)
@@ -23,7 +30,7 @@ export class EventController {
       place: req.query.place ?? undefined,
       price: req.query.price ?? undefined,
       minAge: req.query.minAge ?? undefined,
-      location: req.query.location ?? undefined,
+      location: req.query.location ?? undefined
     }
 
     const cleanedFilters = Object.keys(filters).reduce((acc, key) => {
