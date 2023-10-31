@@ -4,10 +4,7 @@ import { EventModel } from '../../models/event'
 import { type IEvent, type IUser } from '../../types'
 
 type QueryParameters = {
-  place?: string
-  price?: string
-  minAge?: string
-  location?: string
+  [key: string]: string | undefined
 }
 
 export class EventController {
