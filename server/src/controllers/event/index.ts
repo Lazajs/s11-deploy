@@ -27,10 +27,10 @@ export class EventController {
   static async getEvents (req: Request, res: Response) {
     
     const filters: QueryParameters = {
-      place: req.query.place ?? undefined,
-      price: req.query.price ?? undefined,
-      minAge: req.query.minAge ?? undefined,
-      location: req.query.location ?? undefined
+      place: req.query.place as string ?? undefined,
+      price: req.query.price as string ?? undefined,
+      minAge: req.query.minAge as string ?? undefined,
+      location: req.query.location as string ?? undefined
     }
 
     const cleanedFilters = Object.keys(filters).reduce((acc, key) => {
