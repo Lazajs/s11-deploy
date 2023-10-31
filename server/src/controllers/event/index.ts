@@ -30,12 +30,12 @@ export class EventController {
       location: req.query.location as string ?? undefined
     }
 
-    const cleanedFilters = Object.keys(filters).reduce((acc, key) => {
+    const cleanedFilters: QueryParameters = Object.keys(filters).reduce((acc, key) => {
       if (filters[key] !== undefined) {
         acc[key] = filters[key]
       }
       return acc
-    }, {})
+    }, {} as QueryParameters)
 
     let result
 
