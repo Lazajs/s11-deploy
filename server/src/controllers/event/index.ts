@@ -18,19 +18,27 @@ export class EventController {
   }
 
   static async getEvents (req: Request, res: Response) {
-
+    
     const filters = {
       place: req.query.place ?? undefined,
       price: req.query.price ?? undefined,
+      minAge: req.query.minAge || undefined,
       location: req.query.location ?? undefined,
-    };
+    }
+
+    const cleanedFilters = Object.keys(filters).reduce((acc, key) => {
+      if (filters[key] !== undefined) {
+        acc[key] = filters[key]
+      }
+      return acc
+    }, {})
 
     let result
 
-    if (Object.values(filters).every(value => value === undefined)) {
+    if (Object.keys(cleanedFilters).length === 0) {
       result = await EventModel.getAll()
     } else {
-      result = await EventModel.getAll(filters)
+      result = await EventModel.getAll(cleanedFilters)
     }
 
     return res.status(200).json(result.events)
