@@ -18,7 +18,11 @@ export const events = [
     link: "https://google.com/",
     minAge: 18,
     type: "Exterior",
-    days: ["Sábado", "Domingo"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 2,
@@ -26,20 +30,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un recorrido gastronómico en Recoleta",
-    title: "Aventura Gastronómica",
-    place: "Recoleta",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_2",
-    schedule: 10,
-    duration: 3,
-    category: "Gastronómicos",
-    price: 25,
+    creator: "user_id_1",
+    schedule: 15,
+    duration: 2,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
-    minAge: 21,
+    minAge: 18,
     type: "Exterior",
-    days: ["Viernes"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 3,
@@ -47,20 +55,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Una conferencia virtual sobre tecnología",
-    title: "Charla de Tecnología",
-    place: "Virtual",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_3",
-    schedule: 8,
+    creator: "user_id_1",
+    schedule: 15,
     duration: 2,
-    category: "Conferencias y convenciones",
-    price: 0,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
-    minAge: 16,
-    type: "Virtual",
-    days: ["Miércoles"]
+    minAge: 18,
+    type: "Exterior",
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 4,
@@ -68,20 +80,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un picnic familiar en Villa Crespo",
-    title: "Día de Picnic Familiar",
-    place: "Villa Crespo",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_4",
-    schedule: 20,
-    duration: 1,
-    category: "Familiares y niños",
-    price: 0,
+    creator: "user_id_1",
+    schedule: 15,
+    duration: 2,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
-    minAge: 0,
+    minAge: 18,
     type: "Exterior",
-    days: ["Domingo"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 5,
@@ -89,20 +105,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un evento benéfico en Belgrano",
-    title: "Recaudación de Fondos Benéficos",
-    place: "Belgrano",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_5",
-    schedule: 9,
+    creator: "user_id_1",
+    schedule: 15,
     duration: 2,
-    category: "Beneficios y causas benéficas",
-    price: 15,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
-    minAge: 0,
+    minAge: 18,
     type: "Exterior",
-    days: ["Sábado"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 6,
@@ -110,20 +130,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un taller educativo en San Telmo",
-    title: "Taller Educativo",
-    place: "San Telmo",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_6",
-    schedule: 12,
-    duration: 1,
-    category: "Educativos",
-    price: 5,
+    creator: "user_id_1",
+    schedule: 15,
+    duration: 2,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
-    minAge: 12,
-    type: "Interior",
-    days: ["Lunes"]
+    minAge: 18,
+    type: "Exterior",
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 7,
@@ -131,20 +155,24 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un torneo de baloncesto en Caballito",
-    title: "Torneo de Baloncesto",
-    place: "Caballito",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_7",
-    schedule: 16,
+    creator: "user_id_1",
+    schedule: 15,
     duration: 2,
-    category: "Deportivos",
+    category: "Culturales",
     price: 10,
     link: "https://google.com/",
-    minAge: 16,
+    minAge: 18,
     type: "Exterior",
-    days: ["Sábado", "Domingo"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
   {
     id: 8,
@@ -152,61 +180,23 @@ export const events = [
       "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
       "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
     ],
-    description: "Un desfile de moda en La Boca",
-    title: "Fiesta de Moda",
-    place: "La Boca",
+    description: "Un evento cultural en Palermo",
+    title: "Festival Cultural",
+    place: "Palermo",
     reviews: [],
     people: [],
-    creator: "user_id_8",
-    schedule: 19,
-    duration: 3,
-    category: "Moda y belleza",
-    price: 30,
-    link: "https://google.com/",
-    minAge: 18,
-    type: "Exterior",
-    days: ["Viernes"]
-  },
-  {
-    id: 9,
-    imgUrls: [
-      "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
-      "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
-    ],
-    description: "Una reunión social en San Cristóbal",
-    title: "Encuentro Social",
-    place: "San Cristóbal",
-    reviews: [],
-    people: [],
-    creator: "user_id_9",
-    schedule: 13,
+    creator: "user_id_1",
+    schedule: 15,
     duration: 2,
-    category: "Sociales y de entretenimiento",
-    price: 20,
+    category: "Culturales",
+    price: 10,
     link: "https://google.com/",
     minAge: 18,
     type: "Exterior",
-    days: ["Sábado"]
+    days: ["2023-11-04", "2023-11-05"],
+    faqs: [
+      { question: "¿Puedo llevar comida?", answer: "Sí, está permitido llevar comida." },
+      { question: "¿Se permite el acceso a mascotas?", answer: "No se permiten mascotas en el evento." }
+    ]
   },
-  {
-    id: 10,
-    imgUrls: [
-      "https://www.protocoloimep.com/app/uploads/2018/11/que-es-un-evento.jpg",
-      "https://definicion.de/wp-content/uploads/2009/09/concierto.jpg"
-    ],
-    description: "Un taller de diseño de interiores en Villa Urquiza",
-    title: "Taller de Diseño de Interiores",
-    place: "Villa Urquiza",
-    reviews: [],
-    people: [],
-    creator: "user_id_10",
-    schedule: 14,
-    duration: 1,
-    category: "Educativos",
-    price: 15,
-    link: "https://google.com/",
-    minAge: 16,
-    type: "Interior",
-    days: ["Domingo"]
-  }
 ]
