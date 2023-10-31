@@ -22,7 +22,7 @@ export class EventController {
     const filters = {
       place: req.query.place ?? undefined,
       price: req.query.price ?? undefined,
-      minAge: req.query.minAge || undefined,
+      minAge: req.query.minAge ?? undefined,
       location: req.query.location ?? undefined,
     }
 
