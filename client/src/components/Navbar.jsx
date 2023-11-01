@@ -8,9 +8,19 @@ import DropdownDate from './DropdownDate';
 import LoginPopup from './LoginPopup';
 import RegisterPopup from './RegisterPopup';
 import Register2Popup from './Register2Popup';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
+
+  const router = useRouter();
+  const querystring = require('querystring');
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState([]); 
+  const [isPlus18Selected, setIsPlus18Selected] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState('Gratis');
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const handleLoginButtonClick = () => {
     setLoginPopupOpen(true);
@@ -59,6 +69,34 @@ const Navbar = () => {
   const menuRef = useRef(null);
 
   const handleButtonClick = () => {
+
+    if(expanded)
+    {
+      const queryParams = {};
+
+      if (selectedCategories.length > 0) {
+        queryParams.categories = selectedCategories;
+      }
+
+      if (selectedPlaces.length > 0) {
+        queryParams.type = selectedPlaces;
+      }
+
+      if (isPlus18Selected) {
+        queryParams.minAge = isPlus18Selected ? 18 : 0;
+      }
+
+      if (selectedEntry !== 'Ambos') {
+        queryParams.price = selectedEntry === 'Gratis' ? 0 : 1;
+      }
+
+      if (selectedItems.length > 0) {
+        queryParams.place =selectedItems
+      }
+
+      const url = `/events?${querystring.stringify(queryParams)}`;
+      router.push(url);
+    }
     setExpanded(!expanded);
   };
 
@@ -118,7 +156,7 @@ const Navbar = () => {
             }`}
           >
             {expanded ? (
-              // Content when expanded
+              
               <div className="relative w-full">
                 <div className="flex items-center w-full">
                   <div
@@ -205,13 +243,32 @@ const Navbar = () => {
                     </button>
                   </div>
                 </div>
-                {menuSelected === 'category' && <DropdownCategory />}
-                {menuSelected === 'event' && <DropdownEvent />}
-                {menuSelected === 'place' && <DropdownPlace />}
+                {menuSelected === 'category' && 
+                  <DropdownCategory 
+                  selectedCategories={selectedCategories}
+                  setSelectedCategories={setSelectedCategories}
+                  />
+                }
+                {menuSelected === 'event' &&
+                 <DropdownEvent
+                 selectedPlaces={selectedPlaces}
+                 isPlus18Selected={isPlus18Selected}
+                 selectedEntry={selectedEntry}
+                 setSelectedPlaces={setSelectedPlaces}
+                 setIsPlus18Selected={setIsPlus18Selected}
+                 setSelectedEntry={setSelectedEntry}
+               />
+               }
+                {menuSelected === 'place' && 
+                <DropdownPlace 
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+                />
+                }
                 {menuSelected === 'date' && <DropdownDate />}
               </div>
             ) : (
-              // Default button content
+              
               <button
                 type="text"
                 className="rounded-full appearance-none outline-none w-full h-[full] flex items-center justify-between"
