@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const DropdownPlace = () => {
+const DropdownPlace = (props) => {
+
+  const {
+    selectedItems,
+    setSelectedItems
+  } = props;
+
   const items = [
     'Palermo',
     'Belgrano',
@@ -38,9 +44,6 @@ const DropdownPlace = () => {
     'Parque Avellaneda',
     'Villa Pueyrredón',
   ];
-
-  const [selectedItems, setSelectedItems] = useState([]);
-  console.log(selectedItems)
 
   const toggleItemSelection = (item) => {
     if (selectedItems.includes(item)) {
