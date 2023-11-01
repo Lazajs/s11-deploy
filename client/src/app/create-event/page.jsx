@@ -1,58 +1,157 @@
 'use client';
 
+import EventPostedPopup from '@/components/create-event/EventPostedPopup';
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 
 function CreateEvent() {
   const [formData, setFormData] = useState({
-    eventName: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    location: '',
-    neighborhood: '',
-    photos: [],
+    imgUrls: [],
     description: '',
-    eventType: '',
-    free: false,
-    ageRestriction: '',
-    categories: [],
-    faq1: '',
-    faq2: '',
-    faq3: '',
+    title: '',
+    place: '',
+    schedule: '',
+    duration: '',
+    category: [],
+    price: 0,
+    minAge: 0,
+    type: 'presencial',
   });
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [openEventPostedPopup, setOpenEventPostedPopup] = useState(false);
 
-  const handleInputChange = ({ target: { name, value, type, checked } }) => {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [location, setLocation] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+
+  const handleLocationChange = (e) => {
+    setLocation(e.target.value);
+  };
+
+  const handleNeighborhoodChange = (e) => {
+    setNeighborhood(e.target.value);
+  };
+
+  const handleInputChange = ({ target: { name, value, type } }) => {
+    let newValue = value;
+
+    if (type === 'number') {
+      newValue = parseFloat(value);
+    }
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: newValue,
     });
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setSelectedFiles(files);
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
 
-    const fileNames = files.map((file) => file.name);
-    setSelectedFiles(fileNames);
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleImageUpload = (e) => {
+    const files = e.target.files;
+    const imageUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      imageUrls.push(URL.createObjectURL(files[i]));
+    }
+
+    setFormData({
+      ...formData,
+      imgUrls: imageUrls,
+    });
+
+    setSelectedFiles([...selectedFiles, ...files]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    // Verificar si el botón de envío se presionó
+    if (e.nativeEvent.submitter.name === 'publicar') {
+      const combinedPlace = `${location}, ${neighborhood}`;
+      const scheduleTime = new Date(`2000-01-01T${formData.schedule}`);
+      const endTime = new Date(`2000-01-01T${formData.endTime}`);
+      const duration = (endTime - scheduleTime) / (1000 * 60);
+      const updatedFormData = {
+        ...formData,
+        place: combinedPlace,
+        duration,
+      };
+      console.log(updatedFormData);
+      fetch('https://api-crm-cuaz.onrender.com/list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedFormData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error al crear el evento');
+          }
+        })
+        .then((data) => {
+          console.log('Evento creado con éxito', data);
+          // Limpiar los campos del formulario o cambiar al estado inicial
+          setFormData({
+            imgUrls: [],
+            description: '',
+            title: '',
+            place: '',
+            schedule: '',
+            endTime: '', // Añade endTime a la inicialización
+            duration: '',
+            category: [],
+            price: 0,
+            minAge: 0,
+            type: 'presencial',
+          });
+
+          setLocation('');
+          setNeighborhood('');
+          setSelectedFiles([]);
+          setIconos({});
+        })
+        .catch((error) => {
+          console.error('Error al crear el evento', error);
+        });
+    }
   };
 
-  const [mode, setMode] = useState({ online: true, pago: false, atp: false });
+  const [, setMode] = useState({ online: true, pago: false, atp: false });
 
-const handleModeChange = (newMode) => {
- setMode(prevMode => ({ ...prevMode, [newMode]: !prevMode[newMode] }));
-};
+  const handleModeChange = (newMode) => {
+    const updatedFormData = { ...formData };
 
-const isOnline = mode.online;
-const isOnline2 = mode.pago;
-const isOnline3 = mode.atp;
+    if (newMode === 'atp') {
+      updatedFormData.minAge = 0;
+    } else if (newMode === '+18') {
+      updatedFormData.minAge = 18;
+    } else if (newMode === 'online') {
+      updatedFormData.type = 'online';
+    } else if (newMode === 'presencial') {
+      updatedFormData.type = 'presencial';
+    } else if (newMode === 'pago') {
+      updatedFormData.price = 1;
+    } else if (newMode === 'gratis') {
+      updatedFormData.price = 0;
+    }
+    setMode((prevMode) => ({ ...prevMode, [newMode]: !prevMode[newMode] }));
+
+    setFormData(updatedFormData);
+  };
+
+  const isOnline = formData.type === 'online';
+  const isOnline2 = formData.price === 0;
+  const isOnline3 = formData.minAge === 0;
 
   const categories = [
     'Gastronomía',
@@ -73,6 +172,36 @@ const isOnline3 = mode.atp;
       ...prevIconos,
       [category]: prevIconos[category] === 'check' ? 'star' : 'check',
     }));
+
+    setFormData((prevData) => {
+      let updatedCategory = [...prevData.category];
+
+      if (updatedCategory.includes(category)) {
+        updatedCategory = updatedCategory.filter((c) => c !== category);
+      } else {
+        updatedCategory.push(category);
+      }
+
+      return {
+        ...prevData,
+        category: updatedCategory,
+      };
+    });
+  };
+
+  const handleOpenEventPostedPopup = () => {
+    setTimeout(() => {
+      setOpenEventPostedPopup(true);
+    }, 5000);
+  };
+
+  const handleCloseEventPostedPopup = () => {
+    setOpenEventPostedPopup(false);
+  };
+
+  const eventPopup = {
+    isOpen: openEventPostedPopup,
+    isClose: handleCloseEventPostedPopup,
   };
 
   return (
@@ -82,14 +211,14 @@ const isOnline3 = mode.atp;
         <div className="grid grid-cols-2">
           <div className="w-[28rem] flex flex-col gap-8">
             <div>
-              <label htmlFor="eventName" className="block mb-3">
+              <label htmlFor="title" className="block mb-3">
                 ¿Cuál es el nombre de tu evento?
               </label>
               <input
                 type="text"
-                id="eventName"
-                name="eventName"
-                value={formData.eventName}
+                id="title"
+                name="title"
+                value={formData.title}
                 onChange={handleInputChange}
                 placeholder="Nombre del evento"
                 className="mt-1 p-2 w-full border-2 rounded-md"
@@ -97,10 +226,8 @@ const isOnline3 = mode.atp;
               />
             </div>
             <div className="flex justify-between">
-              {/* Agregar otros campos de entrada (fecha, hora, lugar, barrio, etc.) de manera similar */}
-              {/* Ejemplo: */}
               <div>
-                <label htmlFor="date" className="block mb-3">
+                <label htmlFor="" className="block mb-3">
                   Día del evento
                 </label>
                 <input
@@ -115,21 +242,19 @@ const isOnline3 = mode.atp;
               </div>
               {/* Campo Hora de Inicio */}
               <div>
-                <label htmlFor="startTime" className="block mb-3">
+                <label htmlFor="schedule" className="block mb-3">
                   Empieza
                 </label>
                 <input
                   type="time"
-                  id="startTime"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
+                  id="schedule"
+                  name="schedule"
+                  value={formData.schedule}
+                  onChange={handleTimeChange}
                   className="mt-1 p-2 w-full border-2 rounded-md"
                   required
                 />
               </div>
-
-              {/* Campo Hora de Finalización */}
               <div>
                 <label htmlFor="endTime" className="block mb-3">
                   Termina
@@ -139,7 +264,7 @@ const isOnline3 = mode.atp;
                   id="endTime"
                   name="endTime"
                   value={formData.endTime}
-                  onChange={handleInputChange}
+                  onChange={handleTimeChange}
                   className="mt-1 p-2 w-full border-2 rounded-md"
                   required
                 />
@@ -155,15 +280,13 @@ const isOnline3 = mode.atp;
                 type="text"
                 id="location"
                 name="location"
-                value={formData.location}
-                onChange={handleInputChange}
+                value={location}
+                onChange={handleLocationChange}
                 placeholder="Dirección"
                 className="mt-1 p-2 w-full border-2 rounded-md"
                 required
               />
             </div>
-
-            {/* Campo Barrio */}
             <div>
               <label htmlFor="neighborhood" className="block mb-3">
                 Barrio
@@ -172,8 +295,8 @@ const isOnline3 = mode.atp;
                 type="text"
                 id="neighborhood"
                 name="neighborhood"
-                value={formData.neighborhood}
-                onChange={handleInputChange}
+                value={neighborhood}
+                onChange={handleNeighborhoodChange}
                 placeholder="Almagro"
                 className="mt-1 p-2 w-full border-2 rounded-md"
                 required
@@ -192,8 +315,8 @@ const isOnline3 = mode.atp;
                   <input
                     type="file"
                     id="photos"
-                    name="photos"
-                    onChange={handleFileChange}
+                    name="imgUrls"
+                    onChange={handleImageUpload}
                     multiple
                     className="hidden"
                   />
@@ -206,7 +329,7 @@ const isOnline3 = mode.atp;
               <div className="mt-2 w-1/2">
                 <ul className="grid grid-rows-3 text-[#D03719] underline underline-offset-4">
                   {selectedFiles.map((file, index) => (
-                    <li key={index}>{file}</li>
+                    <li key={index}>{file.name}</li>
                   ))}
                 </ul>
               </div>
@@ -229,98 +352,115 @@ const isOnline3 = mode.atp;
           </div>
 
           <div className="flex flex-col gap-8">
-            {/* Agregar botones de selección (online, presencial, pago, gratis, etc.) de manera similar */}
-            {/* Ejemplo: */}
-            <div className="flex flex-col gap-5">
-              <label className="block mb-3">¿Tu evento es?</label>
-              <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
-                <div
-                  className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
-                    isOnline ? 'left-0' : 'left-[9.1rem]'
-                  }`}
-                ></div>
-                <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
-                  <button
-                    onClick={() => handleModeChange('online')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline ? 'text-[#D03719]' : 'text-[#3C76A6]'
+            <div className="flex justify-between w-[35rem] items-end">
+              <div className="flex flex-col gap-5">
+                <label className="block mb-3">¿Tu evento es?</label>
+                <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
+                  <div
+                    className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
+                      isOnline ? 'left-0' : 'left-[9.1rem]'
                     }`}
-                    name="online"
-                  >
-                    Online
-                  </button>
-                  <div className="border-l border-[#54595F]"></div>
-                  <button
-                    onClick={() => handleModeChange('online')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline ? 'text-[#3C76A6]' : 'text-[#D03719]'
+                  ></div>
+                  <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
+                    <button
+                      onClick={() => handleModeChange('online')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline ? 'text-[#D03719]' : 'text-[#3C76A6]'
+                      }`}
+                      name="online"
+                      value="online"
+                    >
+                      Online
+                    </button>
+                    <div className="border-l border-[#54595F]"></div>
+                    <button
+                      onClick={() => handleModeChange('presencial')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline ? 'text-[#3C76A6]' : 'text-[#D03719]'
+                      }`}
+                      name="presencial"
+                      value="presencial"
+                    >
+                      Presencial
+                    </button>
+                  </div>
+                </div>
+                <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
+                  <div
+                    className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
+                      isOnline3 ? 'left-0' : 'left-[9.1rem]'
                     }`}
-                    name="presencial"
-                  >
-                    Presencial
-                  </button>
+                  ></div>
+                  <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
+                    <button
+                      onClick={() => handleModeChange('atp')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline3 ? 'text-[#D03719]' : 'text-[#3C76A6]'
+                      }`}
+                      name="atp"
+                      value="atp"
+                    >
+                      ATP
+                    </button>
+                    <div className="border-l border-[#54595F]"></div>
+                    <button
+                      onClick={() => handleModeChange('+18')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline3 ? 'text-[#3C76A6]' : 'text-[#D03719]'
+                      }`}
+                      name="+18"
+                      value="+18"
+                    >
+                      + 18
+                    </button>
+                  </div>
+                </div>
+                <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
+                  <div
+                    className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
+                      isOnline2 ? 'left-[9.1rem]' : 'left-0'
+                    }`}
+                  ></div>
+                  <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
+                    <button
+                      onClick={() => handleModeChange('pago')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline2 ? 'text-[#D03719]' : 'text-[#3C76A6]'
+                      }`}
+                      name="pago"
+                    >
+                      Pago
+                    </button>
+                    <div className="border-l border-[#54595F]"></div>
+                    <button
+                      onClick={() => handleModeChange('gratis')}
+                      className={`w-[8rem] z-10 ${
+                        isOnline2 ? 'text-[#3C76A6]' : 'text-[#D03719]'
+                      }`}
+                      name="gratis"
+                      value={0}
+                    >
+                      Gratis
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
-                <div
-                  className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
-                    isOnline2 ? 'left-0' : 'left-[9.1rem]'
-                  }`}
-                ></div>
-                <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
-                  <button
-                    onClick={() => handleModeChange('pago')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline2 ? 'text-[#D03719]' : 'text-[#3C76A6]'
-                    }`}
-                    name="pago"
-                  >
-                    Pago
-                  </button>
-                  <div className="border-l border-[#54595F]"></div>
-                  <button
-                    onClick={() => handleModeChange('pago')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline2 ? 'text-[#3C76A6]' : 'text-[#D03719]'
-                    }`}
-                    name="gratis"
-                  >
-                    Gratis
-                  </button>
-                </div>
-              </div>
-              <div className="w-[17.125rem] bg-[rgb(231,239,247)] rounded-full relative">
-                <div
-                  className={`bg-white absolute top-0 w-[8rem] h-full rounded-full border z-0 transition-all ${
-                    isOnline3 ? 'left-0' : 'left-[9.1rem]'
-                  }`}
-                ></div>
-                <div className="flex justify-between py-3 font-semibold text-[#3C76A6]">
-                  <button
-                    onClick={() => handleModeChange('atp')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline3 ? 'text-[#D03719]' : 'text-[#3C76A6]'
-                    }`}
-                    name="atp"
-                  >
-                    ATP
-                  </button>
-                  <div className="border-l border-[#54595F]"></div>
-                  <button
-                    onClick={() => handleModeChange('atp')}
-                    className={`w-[8rem] z-10 ${
-                      isOnline3 ? 'text-[#3C76A6]' : 'text-[#D03719]'
-                    }`}
-                    name="+18"
-                  >
-                    + 18
-                  </button>
-                </div>
+              <div className={`${isOnline2 ? 'hidden' : ''}`}>
+                <label htmlFor="price" className="block mb-1 text-[#666]">
+                  Valor
+                </label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="$"
+                  className="mt-1 p-2 w-[11rem] border-2 rounded-md"
+                  required
+                />
               </div>
             </div>
-
-            {/* Agregar botones de selección de categorías */}
-            {/* Ejemplo: */}
             <div>
               <label className="block mb-3">
                 ¿En que categorias entra tu evento?
@@ -330,62 +470,68 @@ const isOnline3 = mode.atp;
                   <div key={index} className="">
                     <button
                       onClick={() => handleIconChange(category)}
-                      className={`flex items-center gap-3 p-2 rounded-md ${iconos[category] === 'check' ? 'bg-[#E7EFF7] text-[#306699]' : 'bg-[#EEE] text-[#666]'}`}
+                      className={`flex items-center gap-3 p-2 rounded-md ${
+                        iconos[category] === 'check'
+                          ? 'bg-[#E7EFF7] text-[#306699]'
+                          : 'bg-[#EEE] text-[#666]'
+                      }`}
                     >
                       {category}
-                      {iconos[category] === 'check' ? <Icon icon="ph:x" /> : <Icon icon="ph:check-bold" />}
+                      {iconos[category] === 'check' ? (
+                        <Icon icon="ph:x" />
+                      ) : (
+                        <Icon icon="ph:check-bold" />
+                      )}
                     </button>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className='flex flex-col gap-5 w-[28rem]'>
+            <div className="flex flex-col gap-5 w-[28rem]">
               <h4>Crea tus preguntas frecuentes</h4>
               <div>
-              <label htmlFor="faq1" className="block mb-3">
-                Pregunta 1
-              </label>
-              <input
-                type="text"
-                id="faq1"
-                name="faq1"
-                value={formData.faq1}
+                <label htmlFor="faq1" className="block mb-3">
+                  Pregunta 1
+                </label>
+                <input
+                  type="text"
+                  id="faq1"
+                  name="faq1"
+                  value={formData.faq1}
                   onChange={handleInputChange}
-                  placeholder='Respuesta 1'
-                className="mt-1 p-2 w-full border-2 rounded"
-              />
-            </div>
-            {/* Agregar otros campos de preguntas frecuentes de manera similar */}
-            {/* Ejemplo: */}
-            <div>
-              <label htmlFor="faq2" className="block mb-3">
-                Pregunta 2
-              </label>
-              <input
-                type="text"
-                id="faq2"
-                name="faq2"
-                value={formData.faq2}
-                  onChange={handleInputChange}
-                  placeholder='Respuesta 2'
-                className="mt-1 p-2 w-full border-2 rounded"
-              />
+                  placeholder="Respuesta 1"
+                  className="mt-1 p-2 w-full border-2 rounded"
+                />
               </div>
               <div>
-              <label htmlFor="faq2" className="block mb-3">
-                Pregunta 3
-              </label>
-              <input
-                type="text"
-                id="faq2"
-                name="faq2"
-                value={formData.faq2}
+                <label htmlFor="faq2" className="block mb-3">
+                  Pregunta 2
+                </label>
+                <input
+                  type="text"
+                  id="faq2"
+                  name="faq2"
+                  value={formData.faq2}
                   onChange={handleInputChange}
-                  placeholder='Respuesta 3'
-                className="mt-1 p-2 w-full border-2 rounded"
-              />
-            </div>
+                  placeholder="Respuesta 2"
+                  className="mt-1 p-2 w-full border-2 rounded"
+                />
+              </div>
+              <div>
+                <label htmlFor="faq2" className="block mb-3">
+                  Pregunta 3
+                </label>
+                <input
+                  type="text"
+                  id="faq2"
+                  name="faq2"
+                  value={formData.faq2}
+                  onChange={handleInputChange}
+                  placeholder="Respuesta 3"
+                  className="mt-1 p-2 w-full border-2 rounded"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -393,10 +539,13 @@ const isOnline3 = mode.atp;
         <div className="w-[28rem] mt-12">
           <button
             type="submit"
+            name="publicar"
+            onClick={handleOpenEventPostedPopup}
             className="w-full px-4 py-2 bg-[#D03719] text-xl text-white font-bold rounded-full"
           >
             Publicar
           </button>
+          <EventPostedPopup {...eventPopup} />
         </div>
       </form>
     </div>
