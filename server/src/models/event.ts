@@ -26,7 +26,7 @@ export class EventModel {
       const query: Record<string, any> = {};
 
       for (const key in filters) {
-        if (filters.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(filters, key)) {
           const filterValue = filters[key];
           const intValue = parseInt(filterValue, 10);
 
