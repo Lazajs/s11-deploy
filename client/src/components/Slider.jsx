@@ -35,11 +35,11 @@ const Slider = () => {
     <Swiper
       spaceBetween={50}
       slidesPerView={3}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => {}}
+      onSwiper={(swiper) => {}}
     >
       {events.map((event) => (
-        <SwiperSlide key={event} className="w-[30rem]">
+        <SwiperSlide key={event.id} className="w-[30rem]">
           <div className="w-full relative flex items-end justify-center">
             <Image
               src={event.image}

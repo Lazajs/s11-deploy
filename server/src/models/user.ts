@@ -33,17 +33,19 @@ export class UserModel {
 
   static async login ({ email, password }: { email: string, password: string }) {
     try {
-      const found = await User.findOne({ email })
-      if (!found) return { error: 'Usuario no encontrado.' }
+      const found = await User.findOne({ email }).populate('ownEvents').populate('nextEvents').populate('reviews')
+      if (!found) {
+        console.error('Usuario no encontrado.')
+        return { error: 'Usuario no encontrado.' }
+      }
 
       const passwordMatch = await bcrypt.compare(password, found.passwordHash)
-      if (!passwordMatch) return { error: 'Contraseña incorrecta.' }
+      if (!passwordMatch) {
+        console.error('Contraseña incorrecta.')
+        return { error: 'Contraseña incorrecta.' }
+      }
 
-      const data = await found
-        .populate('ownEvents')
-        .populate('nextEvents')
-        .populate('reviews')
-        .toJSON()
+      const data = await found.toJSON()
 
       const token = jwt.sign(data, process.env.JWT_SECRET as string, {
         expiresIn: '1d'
@@ -51,6 +53,7 @@ export class UserModel {
 
       return { ...data, token }
     } catch (err) {
+      console.error(err)
       return { error: err }
     }
   }

@@ -36,7 +36,6 @@ export class AuthController {
 
   static async signin (req: Request, res: Response) {
     const { email, password } = req.body
-
     const result = await UserModel.login({ email, password })
 
     if (result?.error) {
