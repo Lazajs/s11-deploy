@@ -7,6 +7,7 @@ import { PORT } from './utils/config'
 import connect from './db/connect'
 import { router } from './routes'
 import { configureSocketIO } from './sockets/socket'
+import cookieParser from 'cookie-parser'
 import './utils/passport'
 
 const app = express()
@@ -26,11 +27,12 @@ if (!databaseURI || !frontEndURL) {
 }
 
 const corsOptions: cors.CorsOptions = {
-  origin: [frontEndURL],
-  methods: 'GET,POST',
+  origin: [frontEndURL, 'http://localhost:3000/'],
+  methods: 'GET,POST,PUT,DELETE,PATCH',
   credentials: true
 }
 
+app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(express.json())
 

@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import CheckboxInput from './CheckboxInput';
+import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 
 function Register2Popup({ isOpen, onClose, formData }) {
   const [newFormData, setNewFormData] = useState({
@@ -9,6 +11,8 @@ function Register2Popup({ isOpen, onClose, formData }) {
     birthDate: '',
   });
 
+  const {register} = useAuth()
+  const [, setSession] = useSession()
   const [selectedInterests, setSelectedInterests] = useState([]);
 
   const handleChange = (e) => {
@@ -35,7 +39,15 @@ function Register2Popup({ isOpen, onClose, formData }) {
     // Perform register logic here
     console.log('Submitted:', newFormData);
     if (selectedInterests.length > 0) {
-      // Realizar la acción de registro
+      const registerData = {
+        email: newFormData.email,
+        name: newFormData.name,
+        password: newFormData.password,
+        birthdate: newFormData.birthDate,
+        interests: selectedInterests,
+      }
+      console.log(registerData)
+      register(registerData).then(setSession)
       console.log('Intereses seleccionados:', selectedInterests);
       onClose();
     } else {
@@ -99,7 +111,7 @@ function Register2Popup({ isOpen, onClose, formData }) {
                     value={newFormData.birthDate || ''}
                     onChange={handleChange}
                     required
-                    placeholder="25/12/1989"
+                    placeholder="YYYY-MM-DD"
                     className="border border-[#ADADAD] rounded-md outline-none px-4 py-2 w-[303px] h-[38px] text-[9.5px] placeholder:text-[#808080] placeholder:font-normal"
                   />
                 </div>

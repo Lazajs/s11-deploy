@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import useAuth from '@/hooks/useAuth';
+import useSession from '@/hooks/useSession';
 
 function LoginPopup({ isOpen, onClose, onRegisterClick }) {
   const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
     password: '',
   });
 
+  const { login } = useAuth();
+  const [,setSession] = useSession()
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,8 +23,8 @@ function LoginPopup({ isOpen, onClose, onRegisterClick }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Perform login logic here
     console.log('Submitted:', formData);
+    login(formData).then(setSession)
     onClose(); // Close the popup after submission
   }
 

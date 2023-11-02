@@ -10,10 +10,13 @@ import RegisterPopup from './RegisterPopup';
 import Register2Popup from './Register2Popup';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import useSession from '@/hooks/useSession';
+import useAuth from '@/hooks/useAuth';
 
 const Navbar = () => {
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
-
+  const [session, setSession] = useSession()
+  const {logout} = useAuth()
   const router = useRouter();
   const querystring = require('querystring');
 
@@ -24,8 +27,16 @@ const Navbar = () => {
   const [selectedItems, setSelectedItems] = useState([]);
 
   const handleLoginButtonClick = () => {
-    setLoginPopupOpen(true);
-    setRegisterPopupOpen(false);
+    if (!session?.name) {
+      setLoginPopupOpen(true);
+      setRegisterPopupOpen(false);
+    } else {
+      logout()
+        .then((res)=> {
+          setSession(null)
+          router.push('/')
+        })
+    }
   };
 
   const closeLoginPopup = () => {
@@ -292,12 +303,12 @@ const Navbar = () => {
           <Link href='/create-event' className="text-[#D03719] font-semibold px-4 py-2">
             Creá tu evento
           </Link>
-          <button
+            <button
             className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]"
             onClick={handleLoginButtonClick}
-          >
-            Inicia sesión
-          </button>
+            >
+              {session?.name ? 'Cierra sesión' : 'Inicia sesión'}
+            </button>
           <LoginPopup
             isOpen={loginPopupOpen}
             onClose={closeLoginPopup}

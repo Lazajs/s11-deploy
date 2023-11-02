@@ -39,7 +39,7 @@ export default function Events() {
   const queryString = queryStringParts.join('&');
   
   useEffect(() => {
-    const apiUrl = `http://localhost:5000/api/v1/event?${queryString}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/event?${queryString}`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {

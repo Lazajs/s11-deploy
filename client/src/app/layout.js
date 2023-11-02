@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 
 // Components
+import SessionProvider from "@/context/SessionProvider";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -14,11 +15,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-          {children}
-        <Footer />
+        <SessionProvider>
+          <Navbar />
+            {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );
