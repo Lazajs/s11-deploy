@@ -27,7 +27,7 @@ if (!databaseURI || !frontEndURL) {
 }
 
 const corsOptions: cors.CorsOptions = {
-  origin: [frontEndURL, 'http://localhost:3000/'],
+  origin: frontEndURL,
   methods: 'GET,POST,PUT,DELETE,PATCH',
   credentials: true
 }
