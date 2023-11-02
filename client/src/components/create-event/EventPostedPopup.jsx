@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 const EventPostedPopup = ({ isOpen, isClose }) => {
-  const [eventId, setEventId] = useState(null);
+  const [, setEventId] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -40,7 +40,7 @@ const EventPostedPopup = ({ isOpen, isClose }) => {
             ¡Evento publicado!
           </span>
           <Link
-            href={`/event-details/${eventId}`}
+            href={`/event-details/4`}
             className="bg-[#CADCED] text-lg text-[#28527C] font-bold py-2 px-12 rounded-[0.625rem]"
           >
             Ir al evento

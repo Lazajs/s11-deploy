@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,7 +10,6 @@ import 'swiper/css';
 import ReservationPopup from '@/components/event-popups/ReservationPopup';
 // import Map from '@/components/Map';
 
-import { events } from '@/data/events';
 import { useParams } from 'next/navigation';
 
 function EventDetails() {
@@ -20,8 +19,34 @@ function EventDetails() {
 
   const [count, setCount] = useState(1);
 
-  const { imgUrls, description, creator, schedule, price, place, title } =
-    events.find((event) => event.id === Number(id));
+  const [eventData, setEventData] = useState(null);
+  console.log(eventData)
+
+  useEffect(() => {
+    fetch(`https://jsonserverong.onrender.com/events/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error al obtener los datos del evento');
+        }
+      })
+      .then((data) => {
+        setEventData(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id]);
+
+  if (!eventData) {
+    return <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+      <Image src='/cargando.png' width={100} height={100} className='animate-spin-slow z-50' />
+    </div>;
+  }
+
+  const { imgUrls, description, creator, schedule, price, place, title } = eventData;
 
   const increment = () => {
     setCount(count + 1);
