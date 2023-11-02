@@ -1,70 +1,107 @@
-import { type IEvent } from '../types'
-import Event from '../db/models/Event'
-import User from '../db/models/User'
+import { IEvent } from '../types';
+import Event from '../db/models/Event';
+import User from '../db/models/User';
 
 export class EventModel {
-  static async create (event: IEvent) {
+  static async create(event: IEvent) {
     try {
-      const newEvent = new Event(event)
-      const eventFromDb = await newEvent.save()
+      const newEvent = new Event(event);
+      const eventFromDb = await newEvent.save();
 
-      const creator = await User.findById(event.creator)
-      if (!creator) return { error: 'User not found' }
+      const creator = await User.findById(event.creator);
+      if (!creator) return { error: 'User not found' };
 
-      creator.ownEvents.push(eventFromDb._id)
-      await creator.save()
+      creator.ownEvents.push(eventFromDb._id);
+      await creator.save();
 
-      return { event: eventFromDb, error: false }
+      return { event: eventFromDb, error: false };
     } catch (err) {
-      console.log(err)
-      return { error: err }
+      console.error(err);
+      return { error: err };
     }
   }
 
-  static async getAll(filters = {}) {
+  static async getAll(filters: Record<string, any> = {}) {
     try {
-      const events = await Event.find(filters)
-  
-      return { events, error: false }
+      const query: Record<string, any> = {};
+
+      for (const key in filters) {
+        if (Object.prototype.hasOwnProperty.call(filters, key)) {
+          const filterValue = filters[key];
+          const intValue = parseInt(filterValue, 10);
+
+          switch (key) {
+            case 'category':
+            case 'place':
+            case 'type':
+              if (Array.isArray(filterValue)) {
+                query[key] = { $in: filterValue };
+              } else {
+                query[key] = filterValue;
+              }
+              break;
+
+            case 'price':
+              if (!isNaN(intValue)) {
+                if (intValue === 0) {
+                  query[key] = 0;
+                } else {
+                  query[key] = { $gte: intValue };
+                }
+              }
+              break;
+
+            case 'minAge':
+              if (!isNaN(intValue)) {
+                query[key] = { $gte: intValue };
+              }
+              break;
+          }
+        }
+      }
+
+      const events = await Event.find(query);
+
+      return { events, error: false };
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 
-  static async getById (id: string) {
+  static async getById(id: string) {
     try {
-      const event = await Event.findById(id)
-      if (!event) return { error: 'Event not found' }
-      return { event, error: false }
+      const event = await Event.findById(id);
+      if (!event) return { error: 'Event not found' };
+      return { event, error: false };
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 
-  static async deleteById (id: string) {
+  static async deleteById(id: string) {
     try {
-      const event = await Event.findByIdAndDelete(id)
-      if (!event) return { error: 'Event not found' }
-      const creator = await User.findById(event.creator)
-      if (!creator) return { error: 'User not found' }
-      creator.ownEvents = creator.ownEvents.filter((e: string) => e !== id)
-      await creator.save()
+      const event = await Event.findByIdAndDelete(id);
+      if (!event) return { error: 'Event not found' };
+      const creator = await User.findById(event.creator);
+      if (!creator) return { error: 'User not found' };
+      creator.ownEvents = creator.ownEvents.filter((e: string) => e !== id);
+      await creator.save();
 
-      return { event, error: false }
+      return { event, error: false };
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 
-  static async updateById (id: string, update: Partial<IEvent>) {
+  static async updateById(id: string, update: Partial<IEvent>) {
     try {
-      const updatedEvent = await Event.findByIdAndUpdate(id, update, { new: true })
+      const updatedEvent = await Event.findByIdAndUpdate(id, update, { new: true });
 
-      if (!updatedEvent) return { error: 'Event not found' }
+      if (!updatedEvent) return { error: 'Event not found' };
 
-      return { event: updatedEvent, error: false }
+      return { event: updatedEvent, error: false };
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 }
