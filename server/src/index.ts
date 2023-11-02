@@ -18,7 +18,7 @@ const httpServer = http.createServer(app)
 configureSocketIO(httpServer)
 
 const databaseURI = process.env.MONGOOSE_URI
-const frontEndURL = process.env.FRONT_END_URL
+const frontEndURL = process.env.FRONT_END_URL ?? 'http://localhost:3000'
 
 if (!databaseURI || !frontEndURL) {
   throw new Error(
