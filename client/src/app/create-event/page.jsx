@@ -54,77 +54,58 @@ function CreateEvent() {
     });
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = e.target.files;
-    const imageUrls = [];
 
-    for (let i = 0; i < files.length; i++) {
-      imageUrls.push(URL.createObjectURL(files[i]));
+    const uploadPromises = Array.from(files).map(async (file) => {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('upload_preset', 'oiz9dpai')
+
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/dmxriftxk/image/upload', {
+        method: 'POST',
+        body: data
+      })
+
+      if (response.ok) {
+        const responseData = await response.json()
+        return responseData.secure_url
+      } else {
+        console.error(`Image upload failed for ${file.name}`)
+        return null
+      }
+    } catch (error) {
+      console.error(`Image upload failed for ${file.name}`, error)
+      return null
     }
+  })
 
+    const uploadedUrls = await Promise.all(uploadPromises)
+    const filteredUrls = uploadedUrls.filter((url) => url !== null)
     setFormData({
       ...formData,
-      imgUrls: imageUrls,
+      imgUrls: filteredUrls ?? [],
     });
 
     setSelectedFiles([...selectedFiles, ...files]);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    // Verificar si el botón de envío se presionó
-    if (e.nativeEvent.submitter.name === 'publicar') {
-      const combinedPlace = `${location}, ${neighborhood}`;
-      const scheduleTime = new Date(`2000-01-01T${formData.schedule}`);
-      const endTime = new Date(`2000-01-01T${formData.endTime}`);
-      const duration = (endTime - scheduleTime) / (1000 * 60);
-      const updatedFormData = {
-        ...formData,
-        place: combinedPlace,
-        duration,
-      };
-      console.log(updatedFormData);
-      fetch('https://jsonserverong.onrender.com/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedFormData),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Error al crear el evento');
-          }
-        })
-        .then((data) => {
-          console.log('Evento creado con éxito', data);
-          setFormData({
-            imgUrls: [],
-            description: '',
-            title: '',
-            place: '',
-            schedule: '',
-            endTime: '', // Añade endTime a la inicialización
-            duration: '',
-            category: [],
-            price: 0,
-            minAge: 0,
-            type: 'presencial',
-          });
-
-          setLocation('');
-          setNeighborhood('');
-          setSelectedFiles([]);
-          setIconos({});
-        })
-        .catch((error) => {
-          console.error('Error al crear el evento', error);
-        });
-    }
-  };
+  //   // Verificar si el botón de envío se presionó
+  //   if (e.nativeEvent.submitter.name === 'publicar') {
+  //     console.log(formData)
+  //     const data = {
+  //       name: formData.title,
+  //       description: formData.description,
+  //       place: formData.place
+  //     }
+  //     console.log(data) 
+  //   }
+  //     // TODO
+  //   };
 
   const [, setMode] = useState({ online: true, pago: false, atp: false });
 
@@ -165,6 +146,43 @@ function CreateEvent() {
     'Conferencia y convenciones',
   ];
 
+  const barrios = [
+  'Palermo',
+  'Belgrano',
+  'Recoleta',
+  'San Telmo',
+  'La Boca',
+  'San Cristóbal',
+  'Almagro',
+  'Caballito',
+  'Flores',
+  'Villa Crespo',
+  'Boedo',
+  'Villa Urquiza',
+  'Villa Devoto',
+  'Saavedra',
+  'Mataderos',
+  'Nuñez',
+  'Barracas',
+  'Parque Patricios',
+  'Villa del Parque',
+  'Villa Lugano',
+  'Villa Riachuelo',
+  'Villa Soldati',
+  'Pompeya',
+  'Colegiales',
+  'Agronomía',
+  'Villa Ortúzar',
+  'Parque Chacabuco',
+  'Parque Avellaneda',
+  'Monte Castro',
+  'Parque Chas',
+  'Nueva Pompeya',
+  'Villa Santa Rita',
+  'Villa General Mitre',
+  'Coghlan',
+  'Villa Pueyrredón'
+];
   const [iconos, setIconos] = useState({});
 
   const handleIconChange = (category) => {
@@ -207,7 +225,7 @@ function CreateEvent() {
   return (
     <div className="max-w-7xl mx-auto my-32">
       <h2 className="font-semibold text-[2rem] mb-5">Crea tu evento</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={()=> {}}>
         <div className="grid grid-cols-2">
           <div className="w-[28rem] flex flex-col gap-8">
             <div>
@@ -291,16 +309,11 @@ function CreateEvent() {
               <label htmlFor="neighborhood" className="block mb-3">
                 Barrio
               </label>
-              <input
-                type="text"
-                id="neighborhood"
-                name="neighborhood"
-                value={neighborhood}
-                onChange={handleNeighborhoodChange}
-                placeholder="Almagro"
-                className="mt-1 p-2 w-full border-2 rounded-md"
-                required
-              />
+              <select name="neighborhood" id="neighborhood" onChange={handleNeighborhoodChange} defaultValue={neighborhood} className='mt-1 p-2 w-full border-2 rounded-md'>
+                {
+                  barrios.map(cat => <option key={cat} value={cat}>{cat}</option>)
+                }
+              </select>
             </div>
 
             <div>

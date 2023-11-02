@@ -13,10 +13,6 @@ import './utils/passport'
 const app = express()
 app.disable('x-powered-by')
 
-const httpServer = http.createServer(app)
-
-configureSocketIO(httpServer)
-
 const databaseURI = process.env.MONGOOSE_URI
 const frontEndURL = process.env.FRONT_END_URL ?? 'http://localhost:3000'
 
@@ -35,6 +31,10 @@ const corsOptions: cors.CorsOptions = {
 app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(express.json())
+
+const httpServer = http.createServer(app)
+
+configureSocketIO(httpServer)
 
 app.use(
   session({

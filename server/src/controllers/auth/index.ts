@@ -26,7 +26,7 @@ export class AuthController {
       return
     }
 
-    res.cookie('session', result.token, { httpOnly: true })
+    res.cookie('session', result.token, { httpOnly: true, sameSite: 'none', secure: true })
 
     delete result.token
     delete result.passwordHash
@@ -43,7 +43,7 @@ export class AuthController {
       return
     }
 
-    res.cookie('session', result.token, { httpOnly: true })
+    res.cookie('session', result.token, { httpOnly: true, sameSite: 'none', secure: true })
 
     delete result.token
     delete result.passwordHash
