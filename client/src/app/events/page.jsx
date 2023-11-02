@@ -2,6 +2,17 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation';
 
+const imageUrls = [
+  "https://i0.wp.com/greenburghnaturecenter.org/wp-content/uploads/2023/05/cropped-469143d3-20a9-40d8-91ed-b037ad6c293b.jpg?w=1080&ssl=1",
+  "https://www.thesu.org.uk/pageassets/events/events.jpg",
+  "https://photo980x880.mnstatic.com/d9820a70fa57cf2afd487db88b68e5d1/floralis-generica-barrio-de-la-recoleta-347403.jpg",
+  "https://i0.wp.com/localmedia.org/wp-content/uploads/2021/06/events-1.png?resize=1200%2C595&ssl=1",
+  "https://media.timeout.com/images/105809413/image.jpg",
+  "https://images.pagina12.com.ar/styles/focal_content_1200x1050/public/2022-07/582784-planetario-202.jpg?h=1c2f7d91&itok=r0FGwmrf",
+  "https://www.tangol.com/blog/Fotos/Notas/los-5-mejores-museos-de-la-ciudad_106_202110260954440.JPG"
+];
+
+
 export default function Events() {
   const searchParams = useSearchParams()
 
@@ -40,6 +51,7 @@ export default function Events() {
   
   useEffect(() => {
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/event?${queryString}`;
+    
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -50,40 +62,45 @@ export default function Events() {
       });
   }, [queryString]);
 
+  const getRandomImageUrl = () => {
+    const randomIndex = Math.floor(Math.random() * imageUrls.length);
+    return imageUrls[randomIndex];
+  };
+
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-semibold mb-4">Events Page</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {eventsData.map((event) => (
-          <div key={event.id} className="border p-4 rounded shadow-md">
-          <h2 className="text-xl font-semibold mb-2">{event.title}</h2>
-          <p className="text-gray-700">{event.description}</p>
-          <div className="mt-4">
-            <span className="text-gray-500">Category: {event.category}</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Creator: {event.creator}</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Schedule: {event.schedule} hours</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Place: {event.place}</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Price: ${event.price}</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Minimum Age: {event.minAge}+</span>
-          </div>
-          <div className="mt-2">
-            <span className="text-gray-500">Type: {event.type}</span>
-          </div>
-          <div className="mt-4">
-            <a href={event.link} target="_blank" rel="noopener noreferrer" className="text-blue-600">More Info</a>
-          </div>
+      {eventsData.length > 0 && (
+        <div className="text-center mb-4">
+          <h1 className="text-2xl font-semibold">Eventos encontrados:</h1>
         </div>
-        ))}
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {eventsData.length > 0 ? (
+          eventsData.map((event) => (
+            <div key={event.id} className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white">
+              <div className="h-40 relative">
+                <div className="w-full h-40 overflow-hidden">
+                  <img
+                    src={getRandomImageUrl()}
+                    alt="Event Image"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-800">{event.title}</h3>
+                <p className="text-sm text-gray-600 mt-2">Fecha: {event.days[0]} - {event.days[1]}</p>
+                <p className="text-sm text-gray-600">Lugar: {event.place}</p>
+                <p className="text-sm text-gray-600">Precio: ${event.price ? event.price : 'gratis'}</p>
+                <p className="text-sm text-gray-600">Edad mínima: +{event.minAge}</p>
+                <p className="text-sm text-gray-600">Tipo: {event.type}</p>
+                <p className="text-gray-700 mt-3">{event.description}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-xl font-semibold text-gray-800">No se encontraron eventos.</div>
+        )}
       </div>
     </div>
   );
