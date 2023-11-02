@@ -2,6 +2,7 @@
 
 import EventPostedPopup from '@/components/create-event/EventPostedPopup';
 import { Icon } from '@iconify/react';
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 function CreateEvent() {
@@ -84,7 +85,7 @@ function CreateEvent() {
         duration,
       };
       console.log(updatedFormData);
-      fetch('https://api-crm-cuaz.onrender.com/list', {
+      fetch('https://jsonserverong.onrender.com/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +101,6 @@ function CreateEvent() {
         })
         .then((data) => {
           console.log('Evento creado con éxito', data);
-          // Limpiar los campos del formulario o cambiar al estado inicial
           setFormData({
             imgUrls: [],
             description: '',
@@ -545,6 +545,12 @@ function CreateEvent() {
           >
             Publicar
           </button>
+          {openEventPostedPopup && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+              <Image src='/cargando.png' width={100} height={100} className='animate-spin-slow z-50' />
+            </div>
+          )}
           <EventPostedPopup {...eventPopup} />
         </div>
       </form>

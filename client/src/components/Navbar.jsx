@@ -9,6 +9,7 @@ import LoginPopup from './LoginPopup';
 import RegisterPopup from './RegisterPopup';
 import Register2Popup from './Register2Popup';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [loginPopupOpen, setLoginPopupOpen] = useState(false);
@@ -141,10 +142,10 @@ const Navbar = () => {
       }`}
     >
       <nav className="flex items-center justify-around h-[85px] relative z-50">
-        <div className="flex items-center">
+        <Link href='/' className="flex items-center">
           <img src="/logo1.svg" alt="Logo" className="w-[39.4px]" />
           <img src="/logo2.svg" alt="Logo" className="h-[38px] ml-2" />
-        </div>
+        </Link>
         <div className="relative">
           <div className="w-[441px]"></div>
           <div
@@ -288,9 +289,9 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <button className="text-[#D03719] font-semibold px-4 py-2">
+          <Link href='/create-event' className="text-[#D03719] font-semibold px-4 py-2">
             Creá tu evento
-          </button>
+          </Link>
           <button
             className="bg-[#659DCB] text-white font-semibold px-4 py-2 ml-2 rounded-full w-[171px]"
             onClick={handleLoginButtonClick}
