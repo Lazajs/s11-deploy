@@ -67,12 +67,14 @@ const DropdownEvent = (props) => {
         <div className="grid grid-cols-2 gap-5 text-[#54595F]">
         {places.map((place) => (
           <div
-            key={place.id}
-            className={`flex flex-col gap-4 cursor-pointer ${
-              (selectedPlaces.length === 0 && place.name === 'Cualquier lugar') || selectedPlaces.includes(place.name) ? 'border border-blue-500' : ''
-            }`}
-            onClick={() => togglePlace(place.name)}
-          >
+          key={place.id}
+          className={`flex flex-col gap-4 cursor-pointer ${
+            (selectedPlaces.length === 0 && place.name === 'Cualquier lugar') || selectedPlaces.includes(place.name)
+              ? 'bg-black text-white p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+              : 'bg-white-300 p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+          }`}
+          onClick={() => togglePlace(place.name)}
+        >
           <img src={place.image} width={150} height={150} alt="" />
           <span>{place.category}</span>
           </div>
@@ -84,25 +86,29 @@ const DropdownEvent = (props) => {
       <div>
         <p className="font-medium text-black mb-8">Público</p>
         <div className="flex gap-5">
-          <div
-            className={`flex flex-col gap-4 cursor-pointer ${
-              isPlus18Selected ? '' : 'border border-blue-500'
-            }`}
-            onClick={togglePlus18}
-          >
-            <Image src="/TodasEdades.png" width={230} height={150} alt="" />
-            <span>Todas las edades</span>
-          </div>
-          <div
-            className={`flex flex-col gap-4 cursor-pointer ${
-              isPlus18Selected ? 'border border-blue-500' : '' 
-            }`}
-            onClick={togglePlus18}
-          >
+        <div
+          className={`flex flex-col gap-4 cursor-pointer ${
+            isPlus18Selected
+              ? 'bg-white text-black p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+              : 'bg-black text-white p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+          }`}
+          onClick={togglePlus18}
+        >
+          <Image src="/TodasEdades.png" width={230} height={150} alt="" />
+          <span>Todas las edades</span>
+        </div>
+        <div
+          className={`flex flex-col gap-4 cursor-pointer ${
+            isPlus18Selected
+              ? 'bg-black text-white p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+              : 'bg-white text-black p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+          }`}
+          onClick={togglePlus18}
+        >
           <Image src="/18.png" width={150} height={150} alt="" />
           <span>+18</span>
-          </div>
-          </div> 
+        </div>
+      </div>
         <div className='mt-5'>
           <p className="font-medium text-black mb-8">Entrada</p>
           <div className="flex items-center bg-[#EEEEEE] rounded-full w-full p-1">

@@ -51,14 +51,16 @@ const DropdownCategory = (props) => {
     },
     {
       id: 10,
-      category: 'Ver todo         ',
+      category: 'Ver todo',
       image: '/Todo.png',
     },
   ];
 
   const toggleCategory = (categoryName) => {
     setSelectedCategories((prevCategories) => {
-      if (prevCategories.includes(categoryName)) {
+      if (categoryName === "Ver todo") {
+        return prevCategories.length === items.length ? [] : items.map((item) => item.category);
+      } else if (prevCategories.includes(categoryName)) {
         return prevCategories.filter((name) => name !== categoryName);
       } else {
         return [...prevCategories, categoryName];
@@ -72,7 +74,9 @@ const DropdownCategory = (props) => {
         <div key={item.id} className="flex flex-col gap-4" onClick={() => toggleCategory(item.category)}>
           <div
             className={`cursor-pointer ${
-              selectedCategories.includes(item.category) ? 'border border-blue-500' : ''
+              selectedCategories.includes(item.category)
+                ? 'bg-black text-white p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
+                : 'bg-white text-black p-1 px-3 rounded rounded-lg transition duration-300 ease-in-out transform'
             }`}
           >
             <img src={item.image} width={150} height={150} alt="" />
